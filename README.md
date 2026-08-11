@@ -14,10 +14,12 @@
 
 ## 如何運行
 
-網站是純靜態檔案，放在 `site/` 目錄。因為需要 fetch 資料檔，請用 HTTP 伺服器開啟：
+網站是純靜態檔案，位於本倉庫根目錄（`index.html`、`css/`、`js/`、`data/`），並已部署至 GitHub Pages：
+**https://lqjymnl2026.github.io/daily-reading-2026/**。
+
+本機預覽：因需要 fetch 資料檔，請用 HTTP 伺服器開啟：
 
 ```bash
-cd site
 python3 -m http.server 8000
 # 瀏覽器開啟 http://localhost:8000
 ```
@@ -27,19 +29,19 @@ python3 -m http.server 8000
 ## 目錄結構
 
 ```
-site/
-  index.html          今日讀經
-  lesson.html         每日一課（?date=YYYY-MM-DD）
-  calendar.html       讀經曆
-  worship.html        線上崇拜（?date=...&mode=morning|eucharist|evening）
-  about.html          本書分析
-  css/style.css       樣式（禮儀季節配色）
-  js/                 前端邏輯（refs / bible / tts / commentary / liturgy …）
-  data/
-    lectionary.json   397 天結構化讀經資料（從 PDF 解析）
-    refbooks.json     書卷名稱映射
-    bible/*.json      和合本（公有領域）66 卷經文
-analysis/             PDF 解析與資料管線腳本（Python）
+index.html          今日讀經
+lesson.html         每日一課（?date=YYYY-MM-DD）
+calendar.html       讀經曆
+worship.html        線上崇拜（?date=...&mode=morning|eucharist|evening）
+about.html          本書分析
+css/style.css       樣式（禮儀季節配色）
+js/                 前端邏輯（refs / bible / tts / commentary / liturgy …）
+data/
+  lectionary.json   397 天結構化讀經資料（從 PDF 解析）
+  refbooks.json     書卷名稱映射
+  bible/*.json      和合本（公有領域）66 卷經文
+analysis/           PDF 解析與資料管線腳本（Python）
+screenshots/        網站截圖
 ```
 
 ## 資料管線
