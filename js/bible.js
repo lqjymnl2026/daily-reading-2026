@@ -77,7 +77,13 @@
   /** Resolve a whole ref string (e.g. "賽2：1－5") into verses. */
   async function resolveRefString(refStr) {
     const passages = global.RefParser.parseRef(refStr);
-    if (!passages) return { verses: [], note: '無法解析此經文引用：' + refStr, passages: null };
+    if (!passages) {
+      const parenAlt = refStr.match(/^（或(.+)）$/);
+      if (parenAlt) {
+        return { verses: [], note: '可選經文（或）：「' + parenAlt[1] + '」，與本日對應經課二選一使用。', passages: null };
+      }
+      return { verses: [], note: '此條為註記／替代選項，請參照讀經表使用：' + refStr, passages: null };
+    }
     const all = [];
     let note = null;
     for (const p of passages) {

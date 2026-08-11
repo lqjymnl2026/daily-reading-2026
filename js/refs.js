@@ -306,6 +306,9 @@
 
   function parseRef(ref) {
     ref = ref.trim();
+    // parenthesised alternative marker like （或9：1－8）
+    const parenAlt = ref.match(/^（或(.+)）$/);
+    if (parenAlt) ref = parenAlt[1];
     if (ref.startsWith('或')) ref = ref.slice(1).trim();
     const isYa = ref.startsWith('雅') && !ref.startsWith('雅歌') && !ref.startsWith('雅各書');
     const chapters = (ref.match(/\d+/g) || []).map(Number);
