@@ -41,7 +41,9 @@
         <div class="season">${C.esc(I18N.tData(day.season))} · ${C.esc(I18N.tData(day.weekday))}</div>
         <h1>${C.esc(C.formatCN(day.date))}</h1>
         <div class="feast">${C.esc(feast)}</div>
-        <div class="meta">${chips}</div>
+        <div class="meta">${chips}
+          <a class="chip chip-read" id="share-open" title="${C.esc(I18N.t('shareTitle'))}">${C.esc(I18N.t('shareBtn'))}</a>
+        </div>
       </div>`;
   }
 
@@ -108,6 +110,14 @@
     steps.forEach(s => {
       document.querySelector(`[data-body="${s.id}"]`).innerHTML = s.body;
     });
+
+    // share card
+    const so = document.getElementById('share-open');
+    if (so) so.addEventListener('click', () => window.ShareCard.openShareModal(day));
+    const sc = document.getElementById('share-close');
+    if (sc) sc.addEventListener('click', () => window.ShareCard.closeShareModal());
+    const ov = document.getElementById('share-modal');
+    if (ov) ov.addEventListener('click', (e) => { if (e.target === ov) window.ShareCard.closeShareModal(); });
 
     // reflection autosave
     const box = document.getElementById('reflect-box');
