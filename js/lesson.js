@@ -35,7 +35,7 @@
       day.solar_term ? `${I18N.t('solarTerm')}：${I18N.tData(day.solar_term)}` : '',
       day.weekday === '主日' ? I18N.t('wd_主日') : '',
     ].filter(Boolean).map(s => `<span class="chip ${C.colorClass(day.color)}">${C.esc(s)}</span>`).join('');
-    const feast = day.feast || (day.weekday === '主日' ? I18N.t('wd_主日') : '');
+    const feast = I18N.tData(day.feast) || (day.weekday === '主日' ? I18N.t('wd_主日') : '');
     document.getElementById('banner').innerHTML = `
       <div class="banner ${C.seasonClass(day.season)}">
         <div class="season">${C.esc(I18N.tData(day.season))} · ${C.esc(I18N.tData(day.weekday))}</div>
@@ -157,7 +157,7 @@
         card.innerHTML = res.verses.map(v =>
           `<p class="verse ${v.optional ? 'optional' : ''}"><sup>${C.esc(v.num)}</sup>${C.esc(v.text)}</p>`).join('');
       } else {
-        card.innerHTML = `<p class="rnote">${C.esc(res.note || '暂未收录经文。')}</p>`;
+        card.innerHTML = `<p class="rnote">${C.esc(I18N.tData(res.note || '暂未收录经文。'))}</p>`;
       }
     }
   }
@@ -168,7 +168,7 @@
       const refs = Array.isArray(opt[k]) ? opt[k] : [opt[k]];
       const refsHtml = refs.map(r => `
         <div class="reading rt-${k}">
-          <span class="rtag">${READING_LABEL[k]}</span><span class="rref">${C.esc(r)}</span>
+          <span class="rtag">${READING_LABEL[k]}</span><span class="rref">${C.esc(I18N.tData(r))}</span>
           <button class="btn small speak-btn" data-label="${C.esc(I18N.t('speak'))}" data-speak-token="${C.esc(r)}">${C.esc(I18N.t('speak'))}</button>
           <div class="rtext" data-ref="${C.esc(r)}"></div>
         </div>`).join('');
@@ -181,7 +181,7 @@
     const options = day.communion.options;
     if (options.length > 1) {
       const tabs = `<div class="tabs">${options.map((o, i) =>
-        `<div class="tab ${i === 0 ? 'active' : ''}" data-opt="${i}">${C.esc(o.label)}</div>`).join('')}</div>`;
+        `<div class="tab ${i === 0 ? 'active' : ''}" data-opt="${i}">${C.esc(I18N.tData(o.label))}</div>`).join('')}</div>`;
       const panels = options.map((o, i) =>
         `<div class="opt-panel ${i === 0 ? '' : 'hidden'}" data-opt="${i}">${readingCard(o)}</div>`).join('');
       return tabs + panels;
@@ -197,7 +197,7 @@
     if (day.morning && day.morning.length) {
       sections.push(`<h3 style="margin-top:1.4rem">${C.esc(I18N.t('r_morning'))}</h3>
         ${day.morning.map(r => `<div class="reading rt-morning">
-          <span class="rref">${C.esc(r)}</span>
+          <span class="rref">${C.esc(I18N.tData(r))}</span>
           <button class="btn small" data-speak-token="${C.esc(r)}" data-label="${C.esc(I18N.t('speak'))}">${C.esc(I18N.t('speak'))}</button>
           <div class="rtext" data-ref="${C.esc(r)}"></div>
         </div>`).join('')}`);
@@ -205,7 +205,7 @@
     if (day.evening && day.evening.length) {
       sections.push(`<h3 style="margin-top:1.4rem">${C.esc(I18N.t('r_evening'))}</h3>
         ${day.evening.map(r => `<div class="reading rt-evening">
-          <span class="rref">${C.esc(r)}</span>
+          <span class="rref">${C.esc(I18N.tData(r))}</span>
           <button class="btn small" data-speak-token="${C.esc(r)}" data-label="${C.esc(I18N.t('speak'))}">${C.esc(I18N.t('speak'))}</button>
           <div class="rtext" data-ref="${C.esc(r)}"></div>
         </div>`).join('')}`);
@@ -221,7 +221,7 @@
       const v = primary[k];
       if (!v) continue;
       const refs = Array.isArray(v) ? v : [v];
-      refs.forEach(r => items.push({ label: READING_LABEL[k] + ' ' + r, ref: r }));
+      refs.forEach(r => items.push({ label: READING_LABEL[k] + ' ' + I18N.tData(r), ref: r }));
     }
     return `<div class="btnrow">
       ${items.map((it, i) =>

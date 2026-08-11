@@ -124,19 +124,20 @@
       if (v) { keyVerse = { ref: global.RefParser.ZH[res.passages[0].book] + ' ' + v.num, text: v.text }; break; }
     }
 
+    const tr = s => (global.I18N ? global.I18N.tData(s) : s);
     return {
-      theme,
+      theme: tr(theme),
       overview: {
-        ot: otText ? summary(opt.ot, otText) : null,
-        psalm: psText ? summary(opt.psalm, psText) : null,
-        epistle: epText ? summary(opt.epistle, epText) : null,
-        gospel: gsText ? summary(opt.gospel, gsText) : null,
+        ot: otText ? tr(summary(opt.ot, otText)) : null,
+        psalm: psText ? tr(summary(opt.psalm, psText)) : null,
+        epistle: epText ? tr(summary(opt.epistle, epText)) : null,
+        gospel: gsText ? tr(summary(opt.gospel, gsText)) : null,
       },
-      lessons,
-      questions,
-      prayer,
-      keyVerse,
-      seasonNote: sNote.theme,
+      lessons: lessons.map(l => ({ title: tr(l.title), body: tr(l.body) })),
+      questions: questions.map(tr),
+      prayer: tr(prayer),
+      keyVerse: keyVerse ? { ref: tr(keyVerse.ref), text: tr(keyVerse.text) } : null,
+      seasonNote: tr(sNote.theme),
     };
   }
 

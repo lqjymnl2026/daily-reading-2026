@@ -63,6 +63,20 @@
   const I18N = global.I18N;
   I18N.setLang(I18N.getLang());
 
+  // 繁体模式下，把静态 HTML（页脚、静态正文）转为繁体，避免残留简体
+  (function localizeStaticText() {
+    if (I18N.getLang() !== 'zhTW' || !global.ZHConv) return;
+    const conv = global.ZHConv.toTraditional;
+    function walk(root) {
+      const kids = Array.from(root.childNodes);
+      for (const k of kids) {
+        if (k.nodeType === 3) { k.nodeValue = conv(k.nodeValue); continue; }
+        if (k.nodeType === 1 && k.tagName !== 'SCRIPT' && k.tagName !== 'STYLE' && k.tagName !== 'NOSCRIPT') walk(k);
+      }
+    }
+    document.querySelectorAll('footer.site, main').forEach(walk);
+  })();
+
   const VIEW_KEY = 'view-mode';
   const VIEW_ORDER = ['auto', 'mobile', 'desktop'];
   function viewLabel(mode) {
@@ -119,7 +133,7 @@
       el.style.setProperty('--theme-main', colorHex(color));
       el.style.setProperty('--theme-soft', colorHexSoft(color));
       const dot = document.getElementById('theme-dot');
-      if (dot) { dot.style.background = colorHex(color); dot.title = (day ? (day.color || '') + ' · 今日礼仪颜色' : '今日礼仪颜色'); }
+      if (dot) { dot.style.background = colorHex(color); dot.title = (day ? (day.color || '') + ' · ' + I18N.t('litColor') : I18N.t('litColor')); }
     });
   }
   function navDate(dateStr) {

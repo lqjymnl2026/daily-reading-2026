@@ -24,7 +24,7 @@
   }
 
   function renderBanner() {
-    const feast = day.feast || (day.weekday === '主日' ? '主日' : '平日');
+    const feast = I18N.tData(day.feast) || (day.weekday === '主日' ? '主日' : '平日');
     document.getElementById('banner').innerHTML = `
       <div class="banner ${C.seasonClass(day.season)}">
         <div class="season">${C.esc(I18N.t('navWorship'))} · ${C.esc(I18N.tData(day.season))}</div>
@@ -76,12 +76,12 @@
         const rr = refs.filter(Boolean);
         if (rr.length) {
           for (const r of (Array.isArray(rr[0]) ? rr[0] : rr)) {
-            html += `<div class="text"><b>${C.esc(r)}</b>
+            html += `<div class="text"><b>${C.esc(I18N.tData(r))}</b>
               <button class="btn small speak-btn" data-label="🔊" data-speak-token="${C.esc(r)}">🔊</button>
               <div data-ref="${C.esc(r)}"></div></div>`;
           }
         } else {
-          html += `<div class="rubric">（本日此类经课未有指定）</div>`;
+          html += `<div class="rubric">${C.esc(I18N.tData('（本日此类经课未有指定）'))}</div>`;
         }
       } else if (step.steps) {
         for (const s of step.steps) {

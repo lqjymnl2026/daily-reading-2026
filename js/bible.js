@@ -41,7 +41,7 @@
   async function resolvePassage(passage) {
     const { book, chapter, start, end, end_chapter, start_half, end_half, optional, whole_book } = passage;
     const chs = await loadBook(book);
-    if (!chs) return { verses: [], note: '次经书卷：此网站暂未收录经文全文，请参考《次经全书》或线上圣经。' };
+    if (!chs) return { verses: [], note: (global.I18N ? global.I18N.tData('次经书卷：此网站暂未收录经文全文，请参考《次经全书》或线上圣经。') : '次经书卷：此网站暂未收录经文全文，请参考《次经全书》或线上圣经。') };
     const out = [];
     let c = chapter;
     if (whole_book) {
@@ -50,7 +50,7 @@
         const v = chs[i][0];
         if (v) out.push({ num: `${i + 1}：1`, text: v, optional: false });
       }
-      return { verses: out, note: '整卷书卷：此处显示每章首节作为代表。' };
+      return { verses: out, note: (global.I18N ? global.I18N.tData('整卷书卷：此处显示每章首节作为代表。') : '整卷书卷：此处显示每章首节作为代表。') };
     }
     const cEnd = end_chapter != null ? end_chapter : chapter;
     for (let cc = chapter; cc <= cEnd; cc++) {
@@ -81,9 +81,9 @@
     if (!passages) {
       const parenAlt = refStr.match(/^（或(.+)）$/);
       if (parenAlt) {
-        return { verses: [], note: '可选经文（或）：「' + parenAlt[1] + '」，与本日对应经课二选一使用。', passages: null };
+        return { verses: [], note: (global.I18N ? global.I18N.tData('可选经文（或）：「' + parenAlt[1] + '」，与本日对应经课二选一使用。') : '可选经文（或）：「' + parenAlt[1] + '」，与本日对应经课二选一使用。'), passages: null };
       }
-      return { verses: [], note: '此条为注记／替代选项，请参照读经表使用：' + refStr, passages: null };
+      return { verses: [], note: (global.I18N ? global.I18N.tData('此条为注记／替代选项，请参照读经表使用：') : '此条为注记／替代选项，请参照读经表使用：') + refStr, passages: null };
     }
     const all = [];
     let note = null;

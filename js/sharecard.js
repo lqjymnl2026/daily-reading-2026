@@ -95,7 +95,7 @@
     ctx.fillStyle = '#ffffff';
     ctx.fillText(C.formatCN(day.date) + ' · ' + C.weekdayCN(day.date), W / 2, 305);
 
-    const feast = day.feast || (day.weekday === '主日' ? I18N.t('wd_主日') : '');
+    const feast = I18N.tData(day.feast) || (day.weekday === '主日' ? I18N.t('wd_主日') : '');
     ctx.font = '40px ' + FONT;
     const feastLines = wrapText(ctx, feast, W - 220, 2);
     feastLines.forEach((ln, i) => ctx.fillText(ln, W / 2, 388 + i * 54));
@@ -126,7 +126,7 @@
 
     // 计算每行经课（标签 + 经文）
     const readingItems = ORDER.filter(k => opt[k]).map(k => {
-      const refStr = firstOf(opt[k]);
+      const refStr = I18N.tData(firstOf(opt[k]));
       ctx.font = '32px ' + FONT;
       const lines = wrapText(ctx, refStr, refW, 2);
       return { k, refStr, lines };
@@ -285,7 +285,7 @@
       };
       if (status) status.textContent = I18N.t('shareDone');
     } catch (e) {
-      if (status) status.textContent = '生成失败：' + e.message;
+      if (status) status.textContent = I18N.tData('生成失败：') + e.message;
     }
   }
 

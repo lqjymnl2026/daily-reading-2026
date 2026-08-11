@@ -46,7 +46,7 @@
     const refs = order.filter(k => opt[k]).map(k => {
       const v = opt[k];
       const r = Array.isArray(v) ? v[0] : v;
-      return `<div class="reading rt-${k}"><span class="rtag">${label[k]}</span><span class="rref">${C.esc(r)}</span></div>`;
+      return `<div class="reading rt-${k}"><span class="rtag">${label[k]}</span><span class="rref">${C.esc(I18N.tData(r))}</span></div>`;
     }).join('');
     const el = document.getElementById('today');
     const color = day.color || null;
