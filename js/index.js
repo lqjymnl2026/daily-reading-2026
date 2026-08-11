@@ -22,6 +22,7 @@
         <div class="meta">
           <span class="chip ${C.colorClass(day.color)}">礼仪颜色：${C.esc(day.color || '—')}</span>
           ${day.lunar ? `<span class="chip">农历 ${C.esc(day.lunar)}</span>` : ''}
+          <a class="chip chip-read" href="lesson.html?date=${day.date}" title="进入今日读经一课">我要读经</a>
           ${day.solar_term ? `<span class="chip">节气：${C.esc(day.solar_term)}</span>` : ''}
         </div>
       </div>`;
