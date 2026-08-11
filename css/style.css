@@ -259,3 +259,8 @@ html.force-desktop { overflow-x: auto; }
 .reading.rt-morning .rtag { background: #3f8fa8; }
 .reading.rt-evening { border-left-color: #7a6aa8; }
 .reading.rt-evening .rtag { background: #7a6aa8; }
+.lang-select {
+  cursor: pointer; border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.08);
+  color: #f5ecd9; border-radius: 999px; padding: .28rem .5rem; font-size: .78rem; font-family: inherit;
+}
+.lang-select option { color: #2c2420; }

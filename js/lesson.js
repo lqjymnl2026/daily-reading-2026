@@ -2,14 +2,16 @@
 (function () {
   'use strict';
   const C = window.Common;
+  const I18N = window.I18N;
 
   let day = null;
   let dateStr = null;
 
-  const READING_LABEL = { ot: '旧约经课', psalm: '诗篇', epistle: '书信经课', gospel: '福音经课' };
+  const READING_LABEL = { ot: I18N.t('r_ot'), psalm: I18N.t('r_psalm'), epistle: I18N.t('r_epistle'), gospel: I18N.t('r_gospel') };
   const READING_ORDER = ['ot', 'psalm', 'epistle', 'gospel'];
 
   function init() {
+    document.title = I18N.t('navLesson') + ' · ' + I18N.t('brand') + ' 2025–2026';
     C.renderHeader('lesson');
     dateStr = new URLSearchParams(location.search).get('date') || C.todayStr();
     C.loadData().then(() => {
@@ -28,15 +30,15 @@
   function renderBanner() {
     const colors = day.colors_extra && day.colors_extra.length ? [...day.colors_extra, day.color] : [day.color];
     const chips = [
-      `礼仪颜色：${day.color || '—'}`,
-      day.lunar ? `农历 ${day.lunar}` : '',
-      day.solar_term ? `节气：${day.solar_term}` : '',
-      day.weekday === '主日' ? '主日' : '',
+      `${I18N.t('litColor')}：${I18N.tColor(day.color || '—')}`,
+      day.lunar ? `${I18N.t('lunar')} ${I18N.tData(day.lunar)}` : '',
+      day.solar_term ? `${I18N.t('solarTerm')}：${I18N.tData(day.solar_term)}` : '',
+      day.weekday === '主日' ? I18N.t('wd_主日') : '',
     ].filter(Boolean).map(s => `<span class="chip ${C.colorClass(day.color)}">${C.esc(s)}</span>`).join('');
-    const feast = day.feast || (day.weekday === '主日' ? '主日' : '平日');
+    const feast = day.feast || (day.weekday === '主日' ? I18N.t('wd_主日') : '');
     document.getElementById('banner').innerHTML = `
       <div class="banner ${C.seasonClass(day.season)}">
-        <div class="season">${C.esc(day.season)} · ${C.esc(day.weekday)}</div>
+        <div class="season">${C.esc(I18N.tData(day.season))} · ${C.esc(I18N.tData(day.weekday))}</div>
         <h1>${C.esc(C.formatCN(day.date))}</h1>
         <div class="feast">${C.esc(feast)}</div>
         <div class="meta">${chips}</div>
@@ -62,38 +64,38 @@
 
     const steps = [
       {
-        n: 1, title: '文本阅读', id: 'reading',
+        n: 1, title: I18N.t('step1'), id: 'reading',
         body: renderReading(),
       },
       {
-        n: 2, title: '语音朗读', id: 'audio',
+        n: 2, title: I18N.t('step2'), id: 'audio',
         body: renderAudio(commentary),
       },
       {
-        n: 3, title: '今日释经与属灵教训', id: 'study',
+        n: 3, title: I18N.t('step3'), id: 'study',
         body: renderStudy(commentary),
       },
       {
-        n: 4, title: '默想与感受回应', id: 'reflect',
-        body: `<p>安静片刻，用以下问题帮助自己默想今天的经文：</p>
+        n: 4, title: I18N.t('step4'), id: 'reflect',
+        body: `<p>${C.esc(I18N.t('reflectIntro'))}</p>
           <ol>${commentary.questions.map(q => `<li>${C.esc(q)}</li>`).join('')}</ol>
-          <p>也可以在这里写下你的读经感受（自动储存在本机浏览器）：</p>
-          <textarea class="reflect" id="reflect-box" placeholder="写下你今天读经的感受、亮光或回应……">${C.esc(saved)}</textarea>`,
+          <p>${C.esc(I18N.t('reflectWrite'))}</p>
+          <textarea class="reflect" id="reflect-box" placeholder="${C.esc(I18N.t('reflectPlaceholder'))}">${C.esc(saved)}</textarea>`,
       },
       {
-        n: 5, title: '回应祷文', id: 'prayer',
+        n: 5, title: I18N.t('step5'), id: 'prayer',
         body: `<div class="prayer">${C.esc(commentary.prayer)}</div>
-          <p class="note">你也可以加上自己的祈祷，把今天的领受带到上主面前。</p>`,
+          <p class="note">${C.esc(I18N.t('prayerNote'))}</p>`,
       },
       {
-        n: 6, title: '线上崇拜', id: 'worship',
-        body: `<p>按今天的主题与经课，进入圣公会式的线上崇拜：</p>
+        n: 6, title: I18N.t('step6'), id: 'worship',
+        body: `<p>${C.esc(I18N.t('worshipIntro'))}</p>
           <div class="btnrow">
-            <a class="btn primary" href="worship.html?date=${day.date}&mode=morning">早祷崇拜</a>
-            <a class="btn" href="worship.html?date=${day.date}&mode=eucharist">圣餐崇拜</a>
-            <a class="btn" href="worship.html?date=${day.date}&mode=evening">晚祷崇拜</a>
+            <a class="btn primary" href="worship.html?date=${day.date}&mode=morning">${C.esc(I18N.t('worshipMorning'))}</a>
+            <a class="btn" href="worship.html?date=${day.date}&mode=eucharist">${C.esc(I18N.t('worshipEucharist'))}</a>
+            <a class="btn" href="worship.html?date=${day.date}&mode=evening">${C.esc(I18N.t('worshipEvening'))}</a>
           </div>
-          <p class="note">崇拜流程参考香港圣公会《公祷书》结构，祝文为改写版本。</p>`,
+          <p class="note">${C.esc(I18N.t('worshipNote'))}</p>`,
       },
     ];
 
@@ -157,7 +159,7 @@
       const refsHtml = refs.map(r => `
         <div class="reading rt-${k}">
           <span class="rtag">${READING_LABEL[k]}</span><span class="rref">${C.esc(r)}</span>
-          <button class="btn small speak-btn" data-label="🔊 朗读" data-speak-token="${C.esc(r)}">🔊 朗读</button>
+          <button class="btn small speak-btn" data-label="${C.esc(I18N.t('speak'))}" data-speak-token="${C.esc(r)}">${C.esc(I18N.t('speak'))}</button>
           <div class="rtext" data-ref="${C.esc(r)}"></div>
         </div>`).join('');
       return refsHtml;
@@ -175,7 +177,7 @@
       return tabs + panels;
     }
     const sections = day.communion.sections && day.communion.sections.length
-      ? `<div class="note">本日有多场崇拜经课：${day.communion.sections.map(C.esc).join('、')}</div>` : '';
+      ? `<div class="note">${C.esc(I18N.t('multimass'))}${day.communion.sections.map(s => C.esc(I18N.tData(s))).join('、')}</div>` : '';
     const extra = renderDailyOffice();
     return sections + readingCard(options[0]) + extra;
   }
@@ -183,18 +185,18 @@
   function renderDailyOffice() {
     const sections = [];
     if (day.morning && day.morning.length) {
-      sections.push(`<h3 style="margin-top:1.4rem">早祷经课（补充）</h3>
+      sections.push(`<h3 style="margin-top:1.4rem">${C.esc(I18N.t('r_morning'))}</h3>
         ${day.morning.map(r => `<div class="reading rt-morning">
           <span class="rref">${C.esc(r)}</span>
-          <button class="btn small" data-speak-token="${C.esc(r)}" data-label="🔊 朗读">🔊 朗读</button>
+          <button class="btn small" data-speak-token="${C.esc(r)}" data-label="${C.esc(I18N.t('speak'))}">${C.esc(I18N.t('speak'))}</button>
           <div class="rtext" data-ref="${C.esc(r)}"></div>
         </div>`).join('')}`);
     }
     if (day.evening && day.evening.length) {
-      sections.push(`<h3 style="margin-top:1.4rem">晚祷经课（补充）</h3>
+      sections.push(`<h3 style="margin-top:1.4rem">${C.esc(I18N.t('r_evening'))}</h3>
         ${day.evening.map(r => `<div class="reading rt-evening">
           <span class="rref">${C.esc(r)}</span>
-          <button class="btn small" data-speak-token="${C.esc(r)}" data-label="🔊 朗读">🔊 朗读</button>
+          <button class="btn small" data-speak-token="${C.esc(r)}" data-label="${C.esc(I18N.t('speak'))}">${C.esc(I18N.t('speak'))}</button>
           <div class="rtext" data-ref="${C.esc(r)}"></div>
         </div>`).join('')}`);
     }
@@ -215,20 +217,20 @@
       ${items.map((it, i) =>
         `<button class="btn small" data-speak-token="${C.esc(it.ref)}" data-label="🔊 ${C.esc(it.label)}">🔊 ${C.esc(it.label)}</button>`).join('')}
       </div>
-      <p class="note">使用中文语音朗读：桌面／iOS 用浏览器内置语音；<b>Android 自动改用「在线语音」</b>（需网络）。若仍无声，请确认装置已安装 Google 文字转语音并下载中文语音。</p>`;
+      <p class="note">${C.esc(I18N.t('audioNote'))}</p>`;
   }
 
   function renderStudy(commentary) {
     const ov = commentary.overview;
     return `
-      <h3>今日主题</h3>
+      <h3>${C.esc(I18N.t('studyTheme'))}</h3>
       <div class="keyverse">${C.esc(commentary.theme)}</div>
-      ${commentary.keyVerse ? `<h3>今日金句</h3>
+      ${commentary.keyVerse ? `<h3>${C.esc(I18N.t('studyVerse'))}</h3>
         <div class="keyverse">「${C.esc(commentary.keyVerse.text)}」<div style="text-align:right;font-style:normal">—— ${C.esc(commentary.keyVerse.ref)}</div></div>` : ''}
-      <h3>经课概览</h3>
+      <h3>${C.esc(I18N.t('studyOverview'))}</h3>
       ${Object.keys(ov).filter(k => ov[k]).map(k =>
         `<div class="reading rt-${k}"><span class="rtag">${READING_LABEL[k]}</span><span class="rtext">${C.esc(ov[k])}</span></div>`).join('')}
-      <h3>属灵教训</h3>
+      <h3>${C.esc(I18N.t('studyLessons'))}</h3>
       <div class="commentary">
         ${commentary.lessons.map(l => `<div class="point"><b>${C.esc(l.title)}</b><br>${C.esc(l.body)}</div>`).join('')}
       </div>`;

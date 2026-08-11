@@ -2,10 +2,11 @@
 (function (global) {
   'use strict';
   const C = global.Common;
+  const I18N = global.I18N;
   const QR_PATH = 'assets/qr.png';
   const FONT = '"Noto Serif SC","Source Han Serif SC","PingFang SC","Microsoft YaHei","SimSun",sans-serif';
 
-  const TAG_LABEL = { ot: '旧约经课', psalm: '诗篇', epistle: '书信经课', gospel: '福音经课' };
+  const TAG_LABEL = { ot: I18N.t('r_ot'), psalm: I18N.t('r_psalm'), epistle: I18N.t('r_epistle'), gospel: I18N.t('r_gospel') };
   const TAG_COLOR = { ot: '#8a6a14', psalm: '#2e7d4f', epistle: '#5b3a8e', gospel: '#b3413d' };
   const ORDER = ['ot', 'psalm', 'epistle', 'gospel'];
 
@@ -84,17 +85,17 @@
     ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = '#ffffff';
     ctx.font = '34px ' + FONT;
-    ctx.fillText('每 日 读 经 · 香 港 圣 公 会 读 经 表', W / 2, 130);
+    ctx.fillText(I18N.t('cardBrand'), W / 2, 130);
 
     ctx.font = '30px ' + FONT;
     ctx.fillStyle = 'rgba(255,255,255,.95)';
-    ctx.fillText((day.season || '') + (day.color ? '  ·  礼仪颜色 ' + day.color : ''), W / 2, 195);
+    ctx.fillText((I18N.tData(day.season || '')) + (day.color ? '  ·  ' + I18N.t('cardColor') + ' ' + I18N.tColor(day.color) : ''), W / 2, 195);
 
     ctx.font = 'bold 62px ' + FONT;
     ctx.fillStyle = '#ffffff';
     ctx.fillText(C.formatCN(day.date) + ' · ' + C.weekdayCN(day.date), W / 2, 305);
 
-    const feast = day.feast || (day.weekday === '主日' ? '主日' : '平日');
+    const feast = day.feast || (day.weekday === '主日' ? I18N.t('wd_主日') : '');
     ctx.font = '40px ' + FONT;
     const feastLines = wrapText(ctx, feast, W - 220, 2);
     feastLines.forEach((ln, i) => ctx.fillText(ln, W / 2, 388 + i * 54));
@@ -116,66 +117,80 @@
     ctx.stroke();
     ctx.restore();
 
+    // ---------- 白框内容：上下左右居中 ----------
+    const innerX = cardX + 70;
+    const innerW = cardW - 140;
+
+    // 先计算内容总高度
+    const readingItems = ORDER.filter(k => opt[k]).map(k => {
+      const refStr = firstOf(opt[k]);
+      ctx.font = '36px ' + FONT;
+      const lines = wrapText(ctx, refStr, innerW - 40, 2);
+      return { k, refStr, lines };
+    });
+
+    let contentH = 0;
+    contentH += 52;            // 今日经课标题
+    contentH += 46;            // 分隔线
+    for (const it of readingItems) {
+      contentH += 40;          // 类别标签
+      contentH += Math.max(it.lines.length, 1) * 50;
+      contentH += 26;          // 行间距
+    }
+    if (commentary && commentary.keyVerse) {
+      contentH += 24;
+      contentH += 236;         // 金句框
+    }
+
+    let y = cardY + Math.max(40, (cardH - contentH) / 2) + 6;
+
     // 今日经课标题（居中）
     ctx.textAlign = 'center';
     ctx.fillStyle = '#a8883e';
     ctx.font = 'bold 38px ' + FONT;
-    ctx.fillText('今 日 经 课', W / 2, cardY + 76);
+    ctx.fillText(I18N.t('cardSection'), W / 2, y + 36);
+    y += 52;
     ctx.strokeStyle = '#e2d6c3';
     ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(cardX + 60, cardY + 104); ctx.lineTo(cardX + cardW - 60, cardY + 104); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W / 2 - 180, y + 8); ctx.lineTo(W / 2 + 180, y + 8); ctx.stroke();
+    y += 46;
 
-    // ---------- 四段经课 ----------
-    let y = cardY + 152;
-    for (const k of ORDER) {
-      const ref = opt[k];
-      if (!ref) continue;
-      const refStr = firstOf(ref);
-      const tag = TAG_LABEL[k];
-      const tagC = TAG_COLOR[k];
-
-      // 标签（居中于色块）
-      ctx.fillStyle = tagC;
-      roundRect(ctx, cardX + 40, y - 34, 172, 60, 12);
-      ctx.fill();
+    // 四段经课（无背景条，居中）
+    for (const it of readingItems) {
       ctx.textAlign = 'center';
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '26px ' + FONT;
-      ctx.fillText(tag, cardX + 40 + 86, y + 2);
-
-      // 经文引用（左对齐）
-      ctx.textAlign = 'left';
+      ctx.fillStyle = TAG_COLOR[it.k];
+      ctx.font = 'bold 30px ' + FONT;
+      ctx.fillText(TAG_LABEL[it.k], W / 2, y + 28);
+      y += 40;
       ctx.fillStyle = '#2c2420';
       ctx.font = '36px ' + FONT;
-      const refLines = wrapText(ctx, refStr, cardW - 300, 2);
-      refLines.forEach((ln, i) => ctx.fillText(ln, cardX + 260, y + i * 48));
-      y += Math.max(refLines.length, 1) * 52 + 30;
+      it.lines.forEach((ln, i) => ctx.fillText(ln, W / 2, y + i * 50));
+      y += Math.max(it.lines.length, 1) * 50 + 26;
     }
 
-    // ---------- 今日金句 ----------
+    // 今日金句（居中框）
     if (commentary && commentary.keyVerse) {
-      y += 16;
-      const boxH = 236;
+      y += 24;
+      const boxX = W / 2 - 390, boxW = 780, boxH = 236;
       ctx.fillStyle = lighten(main, 0.82);
-      roundRect(ctx, cardX + 40, y - 24, cardW - 80, boxH, 18);
+      roundRect(ctx, boxX, y - 24, boxW, boxH, 18);
       ctx.fill();
-      ctx.textAlign = 'left';
+      ctx.textAlign = 'center';
       ctx.fillStyle = '#a8883e';
       ctx.font = 'bold 28px ' + FONT;
-      ctx.fillText('今日金句', cardX + 64, y + 22);
+      ctx.fillText(I18N.t('cardKeyVerse'), W / 2, y + 22);
       ctx.fillStyle = '#3a332c';
       ctx.font = 'italic 30px ' + FONT;
       const kv = '「' + (commentary.keyVerse.text || '') + '」';
-      const kvLines = wrapText(ctx, kv, cardW - 150, 3);
-      kvLines.forEach((ln, i) => ctx.fillText(ln, cardX + 64, y + 68 + i * 42));
+      const kvLines = wrapText(ctx, kv, boxW - 80, 3);
+      kvLines.forEach((ln, i) => ctx.fillText(ln, W / 2, y + 68 + i * 42));
       ctx.fillStyle = '#5c5148';
       ctx.font = '26px ' + FONT;
-      ctx.textAlign = 'right';
-      ctx.fillText('—— ' + commentary.keyVerse.ref, cardX + cardW - 64, y + boxH - 18);
+      ctx.fillText('—— ' + commentary.keyVerse.ref, W / 2, y + boxH - 16);
       y += boxH + 26;
     }
 
-    // ---------- 二维码 ----------
+    // ---------- 二维码（无链接文字） ----------
     const qrY = H - 420;
     ctx.save();
     ctx.shadowColor = 'rgba(0,0,0,.15)';
@@ -191,24 +206,18 @@
     ctx.fillStyle = main;
     ctx.fillRect(W / 2 - 210, qrY, 420, 16);
     ctx.restore();
-    roundRect(ctx, W / 2 - 210, qrY + 8, 420, 8, 0);
-    ctx.fillStyle = main;
-    ctx.fill();
     const qrSize = 240;
-    ctx.drawImage(qr, W / 2 - qrSize / 2, qrY + 28, qrSize, qrSize);
+    ctx.drawImage(qr, W / 2 - qrSize / 2, qrY + 30, qrSize, qrSize);
     ctx.textAlign = 'center';
     ctx.fillStyle = '#2c2420';
     ctx.font = 'bold 30px ' + FONT;
-    ctx.fillText('扫码阅读今日读经', W / 2, qrY + 302);
-    ctx.fillStyle = '#5c5148';
-    ctx.font = '24px ' + FONT;
-    ctx.fillText('lqjymnl2026.github.io/daily-reading-2026', W / 2, qrY + 340);
+    ctx.fillText(I18N.t('cardScan'), W / 2, qrY + 308);
 
     // ---------- 页脚 ----------
     ctx.textAlign = 'center';
     ctx.fillStyle = 'rgba(255,255,255,.9)';
     ctx.font = '24px ' + FONT;
-    ctx.fillText('每日读经 2025–2026 · 经文采用和合本', W / 2, H - 26);
+    ctx.fillText(I18N.t('cardFooter'), W / 2, H - 26);
 
     return canvas;
   }
@@ -234,8 +243,16 @@
     const shareBtn = document.getElementById('share-share');
     const status = document.getElementById('share-status');
     if (!modal) return;
+    const h3 = modal.querySelector('h3');
+    if (h3) h3.textContent = I18N.t('shareTitle');
+    if (saveBtn) saveBtn.textContent = I18N.t('shareSave');
+    if (shareBtn) shareBtn.textContent = I18N.t('shareShare');
+    const closeBtn = document.getElementById('share-close');
+    if (closeBtn) closeBtn.textContent = I18N.t('shareClose');
+    const lp = document.getElementById('share-longpress');
+    if (lp) lp.textContent = I18N.t('shareLongpress');
     modal.classList.remove('hidden');
-    if (status) status.textContent = '正在生成分享卡…';
+    if (status) status.textContent = I18N.t('shareGenerating');
     try {
       const commentary = await global.Commentary.generate(day);
       const canvas = await generateCard(day, commentary);
@@ -252,7 +269,7 @@
           saveCanvas(canvas, filename);
         }
       };
-      if (status) status.textContent = '生成完成，点击保存或长按图片保存。';
+      if (status) status.textContent = I18N.t('shareDone');
     } catch (e) {
       if (status) status.textContent = '生成失败：' + e.message;
     }

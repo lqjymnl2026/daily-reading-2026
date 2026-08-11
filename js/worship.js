@@ -1,15 +1,19 @@
 (function () {
   'use strict';
   const C = window.Common;
+  const I18N = window.I18N;
   let day = null;
   let dateStr = null;
   let mode = 'morning';
 
   function init() {
+    document.title = I18N.t('navWorship') + ' · ' + I18N.t('brand') + ' 2025–2026';
     C.renderHeader('worship');
     const params = new URLSearchParams(location.search);
     dateStr = params.get('date') || C.todayStr();
     mode = params.get('mode') || 'morning';
+    const noteEl = document.getElementById('worship-note');
+    if (noteEl) noteEl.textContent = I18N.t('worshipRubric');
     C.loadData().then(() => {
       day = C.getDay(dateStr) || C.getDay(C.todayStr());
       renderBanner();
@@ -23,9 +27,9 @@
     const feast = day.feast || (day.weekday === '主日' ? '主日' : '平日');
     document.getElementById('banner').innerHTML = `
       <div class="banner ${C.seasonClass(day.season)}">
-        <div class="season">线上崇拜 · ${C.esc(day.season)}</div>
+        <div class="season">${C.esc(I18N.t('navWorship'))} · ${C.esc(I18N.tData(day.season))}</div>
         <h1>${C.esc(C.formatCN(day.date))} · ${C.esc(feast)}</h1>
-        <div class="meta"><span class="chip ${C.colorClass(day.color)}">礼仪颜色：${C.esc(day.color || '—')}</span></div>
+        <div class="meta"><span class="chip ${C.colorClass(day.color)}">${C.esc(I18N.t('litColor'))}：${C.esc(I18N.tColor(day.color || '—'))}</span></div>
       </div>`;
   }
 
@@ -43,7 +47,7 @@
     const el = document.getElementById('modes');
     const keys = ['morning', 'eucharist', 'evening'];
     el.innerHTML = keys.map(k =>
-      `<div class="tab ${k === mode ? 'active' : ''}" data-mode="${k}">${window.Liturgy.MODES[k].label}</div>`).join('');
+      `<div class="tab ${k === mode ? 'active' : ''}" data-mode="${k}">${C.esc(I18N.t(window.Liturgy.MODES[k].labelKey))}</div>`).join('');
     el.querySelectorAll('.tab').forEach(t => {
       t.onclick = () => { mode = t.dataset.mode; history.replaceState(null, '', `worship.html?date=${dateStr}&mode=${mode}`); renderLiturgy(); renderModes(); };
     });
@@ -55,12 +59,12 @@
     const opt = day.communion.options[0];
     const collect = window.Liturgy.collect(day);
 
-    let html = `<h2 style="color:var(--gold)">${C.esc(def.label)}</h2>
-      <p class="note">${C.esc(def.sub)}</p>`;
+    let html = `<h2 style="color:var(--gold)">${C.esc(I18N.t(def.labelKey))}</h2>
+      <p class="note">${C.esc(I18N.t(def.subKey))}</p>`;
 
     for (const step of def.steps) {
       html += `<div class="worship-step">
-        <div class="who">${C.esc(step.heading)}</div>`;
+        <div class="who">${C.esc(window.Liturgy.heading(step.heading))}</div>`;
       if (step.collect) {
         html += `<div class="text">${C.esc(collect)}</div>`;
       } else if (step.reading) {
@@ -81,7 +85,7 @@
         }
       } else if (step.steps) {
         for (const s of step.steps) {
-          html += `<div class="text ${s.rubric ? 'rubric' : ''}"><span class="${s.who === '会众' ? 'resp' : 'leader'}">${C.esc(s.who)}：</span>${C.esc(s.text)}</div>`;
+          html += `<div class="text ${s.rubric ? 'rubric' : ''}"><span class="${s.who === '会众' ? 'resp' : 'leader'}">${C.esc(window.Liturgy.LS(s))}</span></div>`;
         }
       }
       html += `</div>`;

@@ -26,8 +26,8 @@
   }
   function weekdayCN(s) {
     const dt = parseDate(s);
-    const map = ['日', '一', '二', '三', '四', '五', '六'];
-    return '星期' + map[dt.getDay()];
+    const map = ['主日', '一', '二', '三', '四', '五', '六'];
+    return I18N.t('wd_' + map[dt.getDay()]);
   }
   function addDays(s, n) {
     const dt = parseDate(s);
@@ -60,12 +60,15 @@
   function colorHexSoft(color) { const b = colorBase(color); return (b && COLOR_HEX_SOFT[b]) || '#3d322a'; }
   function colorDesc(color) { const b = colorBase(color); return (b && COLOR_DESC[b]) || ''; }
 
+  const I18N = global.I18N;
+  I18N.setLang(I18N.getLang());
+
   const VIEW_KEY = 'view-mode';
   const VIEW_ORDER = ['auto', 'mobile', 'desktop'];
   function viewLabel(mode) {
-    if (mode === 'mobile') return '📱 手机版';
-    if (mode === 'desktop') return '🖥 电脑版';
-    return '🔄 自动';
+    if (mode === 'mobile') return I18N.t('viewMobile');
+    if (mode === 'desktop') return I18N.t('viewDesktop');
+    return I18N.t('viewAuto');
   }
   function applyViewMode() {
     let mode = 'auto';
@@ -87,20 +90,27 @@
 
   function renderHeader(active) {
     const nav = [
-      ['index.html', '今日读经', 'today'],
-      ['lesson.html', '每日一课', 'lesson'],
-      ['calendar.html', '读经历', 'calendar'],
-      ['worship.html', '线上崇拜', 'worship'],
-      ['about.html', '本书分析', 'about'],
+      ['index.html', I18N.t('navToday'), 'today'],
+      ['lesson.html', I18N.t('navLesson'), 'lesson'],
+      ['calendar.html', I18N.t('navCalendar'), 'calendar'],
+      ['worship.html', I18N.t('navWorship'), 'worship'],
+      ['about.html', I18N.t('navAbout'), 'about'],
     ];
     const el = document.getElementById('site-header');
     if (!el) return;
     el.innerHTML =
-      '<a class="brand" href="index.html">每日读经<small>2025–2026 · 香港圣公会读经表</small><span class="theme-dot" id="theme-dot" title="今日礼仪颜色"></span></a>' +
+      '<a class="brand" href="index.html">' + I18N.t('brand') + '<small>' + I18N.t('brandSub') + '</small><span class="theme-dot" id="theme-dot" title="' + I18N.t('litColor') + '"></span></a>' +
       '<nav>' + nav.map(([href, label, key]) =>
         `<a href="${href}" class="${key === active ? 'active' : ''}">${label}</a>`).join('') + '</nav>' +
-      '<button class="view-toggle" id="view-toggle" title="点击切换：自动 / 手机版 / 电脑版">🔄 自动</button>';
+      '<button class="view-toggle" id="view-toggle" title="' + I18N.t('viewToggleTitle') + '">' + viewLabel(applyViewMode()) + '</button>' +
+      '<select class="lang-select" id="lang-select" title="Language / 语言">' +
+        I18N.LANGS.map(l => `<option value="${l.id}" ${l.id === I18N.getLang() ? 'selected' : ''}>${I18N.langLabel(l.id)}</option>`).join('') +
+      '</select>';
     el.querySelector('#view-toggle').addEventListener('click', cycleViewMode);
+    el.querySelector('#lang-select').addEventListener('change', (e) => {
+      I18N.setLang(e.target.value);
+      location.reload();
+    });
     applyViewMode();
     // 全站导航主题色 = 今日礼仪颜色
     loadData().then(() => {
@@ -114,10 +124,10 @@
   }
   function navDate(dateStr) {
     return `<div class="nav-date">
-      <button class="btn small" data-prev>‹ 前一日</button>
+      <button class="btn small" data-prev>${I18N.t('prevDay')}</button>
       <strong>${formatCN(dateStr)} · ${weekdayCN(dateStr)}</strong>
-      <button class="btn small" data-next>后一日 ›</button>
-      <button class="btn small" data-today>今天</button>
+      <button class="btn small" data-next>${I18N.t('nextDay')}</button>
+      <button class="btn small" data-today>${I18N.t('todayBtn')}</button>
     </div>`;
   }
 
