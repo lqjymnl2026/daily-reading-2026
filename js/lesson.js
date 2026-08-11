@@ -215,7 +215,7 @@
       ${items.map((it, i) =>
         `<button class="btn small" data-speak-token="${C.esc(it.ref)}" data-label="🔊 ${C.esc(it.label)}">🔊 ${C.esc(it.label)}</button>`).join('')}
       </div>
-      <p class="note">使用瀏覽器內置中文語音朗讀（Web Speech API）。語音品質取決於您的裝置與瀏覽器。朗讀全文時可點擊每段經文的「朗讀」按鈕。</p>`;
+      <p class="note">使用中文語音朗讀：桌面／iOS 用瀏覽器內置語音；<b>Android 自動改用「在線語音」</b>（需網絡）。若仍無聲，請確認裝置已安裝 Google 文字轉語音並下載中文語音。</p>`;
   }
 
   function renderStudy(commentary) {
