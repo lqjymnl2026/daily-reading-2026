@@ -1,0 +1,212 @@
+/* 每日讀經 — liturgical devotional design */
+:root {
+  --ink: #2c2420;
+  --ink-soft: #5c5148;
+  --paper: #faf6ef;
+  --paper-2: #f3ecdf;
+  --line: #e2d6c3;
+  --gold: #a8883e;
+  --gold-soft: #d9c794;
+  --card: #fffdf8;
+  /* season accents */
+  --adv: #5b3a8e;    /* 將臨期 紫 */
+  --xmas: #b8860b;   /* 聖誕 金 */
+  --epiph: #c9a227;  /* 顯現 金/白 */
+  --lent: #6d4a3a;   /* 大齋 棕紫 */
+  --easter: #d4af37; /* 復活 金 */
+  --pent: #2e7d4f;   /* 聖靈降臨 綠 */
+  --ord: #4a7a8c;    /* 常年期 */
+  --red: #b3413d;
+  --white: #f5f1e6;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: "Noto Serif TC", "Songti TC", "PMingLiU", "Times New Roman", serif;
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.85;
+  letter-spacing: .02em;
+}
+h1, h2, h3, h4 { font-weight: 600; line-height: 1.4; }
+a { color: var(--gold); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+header.site {
+  position: sticky; top: 0; z-index: 50;
+  background: linear-gradient(180deg, #2c2420, #3d322a);
+  color: #f5ecd9;
+  padding: .7rem 1.2rem;
+  display: flex; align-items: center; gap: 1rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,.25);
+}
+header.site .brand { font-size: 1.15rem; font-weight: 700; color: #f5ecd9; letter-spacing: .12em; }
+header.site .brand small { display: block; font-size: .68rem; color: #cbb98a; font-weight: 400; letter-spacing: .3em; }
+header.site nav { margin-left: auto; display: flex; gap: .4rem; flex-wrap: wrap; }
+header.site nav a {
+  color: #e8dcc0; padding: .3rem .7rem; border-radius: 999px; font-size: .92rem;
+  border: 1px solid transparent;
+}
+header.site nav a:hover { background: rgba(255,255,255,.08); text-decoration: none; }
+header.site nav a.active { background: var(--gold); color: #241d14; }
+
+main { max-width: 900px; margin: 0 auto; padding: 1.6rem 1.1rem 4rem; }
+
+/* season banner */
+.banner {
+  border-radius: 14px; padding: 1.4rem 1.5rem; color: #fbf6ea;
+  margin-bottom: 1.4rem; position: relative; overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0,0,0,.12);
+}
+.banner::after {
+  content: ""; position: absolute; right: -40px; top: -60px; width: 220px; height: 220px;
+  border-radius: 50%; background: rgba(255,255,255,.08);
+}
+.banner.season-將臨期 { background: linear-gradient(135deg, #4a2f77, #6b4ea0); }
+.banner.season-聖誕期, .banner.season-顯現期 { background: linear-gradient(135deg, #8a6a14, #c9a227); }
+.banner.season-大齋期 { background: linear-gradient(135deg, #54392e, #7a5a48); }
+.banner.season-復活期 { background: linear-gradient(135deg, #9a7a12, #d9bc44); }
+.banner.season-聖靈降臨期 { background: linear-gradient(135deg, #1f6b40, #3f9c67); }
+.banner.season-常年期 { background: linear-gradient(135deg, #35606f, #5b91a3); }
+.banner .season { font-size: .78rem; letter-spacing: .35em; opacity: .9; }
+.banner h1 { margin: .2rem 0 .2rem; font-size: 1.6rem; }
+.banner .feast { font-size: 1.02rem; opacity: .95; }
+.banner .meta { margin-top: .5rem; font-size: .85rem; opacity: .9; display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.chips { display: flex; gap: .5rem; flex-wrap: wrap; margin: .6rem 0; }
+.chip {
+  display: inline-block; padding: .18rem .7rem; border-radius: 999px;
+  background: var(--paper-2); border: 1px solid var(--line); font-size: .82rem; color: var(--ink-soft);
+}
+.chip.color-紫 { background: #efe7f7; border-color: #cfbde6; color: #5b3a8e; }
+.chip.color-紅 { background: #f8e4e2; border-color: #e8b9b5; color: #b3413d; }
+.chip.color-白, .chip.color-金\/白 { background: #f6f2e6; border-color: #dccf9f; color: #8a6a14; }
+.chip.color-綠 { background: #e5f2e9; border-color: #bcdcc7; color: #2e7d4f; }
+.chip.color-黑, .chip.color-灰 { background: #ece9e4; border-color: #c9c3b9; color: #555; }
+
+/* cards */
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 1.1rem 1.2rem; margin: 1rem 0; box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+.card h2 { margin-top: 0; font-size: 1.05rem; color: var(--gold); letter-spacing: .12em; border-bottom: 1px dashed var(--line); padding-bottom: .45rem; }
+.card h3 { font-size: .95rem; color: var(--ink); margin: 1rem 0 .3rem; }
+.section-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--gold); color: #fff;
+  font-size: .85rem; margin-right: .5rem; flex: 0 0 auto;
+}
+.step-title { display: flex; align-items: center; font-weight: 600; font-size: 1rem; color: var(--ink); }
+
+/* reading cards */
+.reading { border-left: 4px solid var(--gold); padding-left: .9rem; margin: .9rem 0; }
+.reading .rtag {
+  display: inline-block; font-size: .72rem; letter-spacing: .2em; color: #fff;
+  background: var(--gold); border-radius: 4px; padding: .1rem .5rem; margin-right: .4rem;
+}
+.reading .rref { font-weight: 700; color: var(--ink); }
+.reading .rtext { color: #3a332c; margin-top: .35rem; white-space: pre-wrap; }
+.reading .rnote { font-size: .82rem; color: var(--ink-soft); font-style: italic; margin-top: .3rem; }
+.verse { margin: .1rem 0; }
+.verse sup { color: var(--gold); font-size: .68rem; margin-right: .25rem; }
+.verse.optional { opacity: .75; }
+.reading.rt-gospel { border-left-color: var(--red); }
+.reading.rt-gospel .rtag { background: var(--red); }
+.reading.rt-psalm { border-left-color: var(--pent); }
+.reading.rt-psalm .rtag { background: var(--pent); }
+.reading.rt-epistle { border-left-color: var(--adv); }
+.reading.rt-epistle .rtag { background: var(--adv); }
+.reading.rt-ot { border-left-color: #8a6a14; }
+.reading.rt-ot .rtag { background: #8a6a14; }
+
+/* play button */
+.btn {
+  display: inline-flex; align-items: center; gap: .4rem; cursor: pointer;
+  border: 1px solid var(--gold); color: var(--gold); background: transparent;
+  border-radius: 999px; padding: .32rem .95rem; font-size: .85rem; font-family: inherit;
+  transition: all .15s ease;
+}
+.btn:hover { background: var(--gold); color: #fff; }
+.btn.small { padding: .15rem .6rem; font-size: .75rem; }
+.btn.primary { background: var(--gold); color: #fff; }
+.btn.primary:hover { background: #8f742e; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btnrow { display: flex; gap: .5rem; flex-wrap: wrap; margin: .5rem 0; }
+
+/* commentary */
+.commentary .point { margin: .7rem 0; }
+.commentary .point b { color: var(--gold); }
+.keyverse { background: var(--paper-2); border-left: 4px solid var(--gold); padding: .8rem 1rem; border-radius: 0 10px 10px 0; font-style: italic; }
+.prayer { background: #f4ecdd; border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1.1rem; white-space: pre-wrap; }
+
+/* reflection textarea */
+textarea.reflect {
+  width: 100%; min-height: 130px; border: 1px solid var(--line); border-radius: 10px;
+  padding: .8rem; font-family: inherit; font-size: .95rem; background: #fffdf8; color: var(--ink);
+  resize: vertical;
+}
+
+/* tabs */
+.tabs { display: flex; gap: .3rem; flex-wrap: wrap; margin: .8rem 0; }
+.tab {
+  padding: .4rem 1rem; border-radius: 999px; cursor: pointer; font-size: .9rem;
+  border: 1px solid var(--line); background: var(--paper-2); color: var(--ink-soft);
+}
+.tab.active { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+/* calendar */
+.month-nav { display: flex; align-items: center; justify-content: space-between; margin: 1rem 0; }
+.month-nav h2 { margin: 0; }
+.grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.grid .dow { text-align: center; font-size: .75rem; color: var(--ink-soft); padding: .3rem 0; }
+.cal-cell {
+  min-height: 72px; border-radius: 8px; padding: .25rem .35rem; font-size: .8rem;
+  background: var(--card); border: 1px solid var(--line); cursor: pointer; position: relative;
+  transition: transform .1s ease;
+}
+.cal-cell:hover { transform: translateY(-2px); border-color: var(--gold); }
+.cal-cell .d { font-weight: 700; }
+.cal-cell .f { font-size: .66rem; color: var(--ink-soft); line-height: 1.3; overflow: hidden; max-height: 3.2em; }
+.cal-cell.empty { background: transparent; border-color: transparent; cursor: default; }
+.cal-cell.today { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-soft); }
+.cal-cell .color-dot { width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 5px; right: 5px; }
+.dot-紫 { background: #5b3a8e; } .dot-紅 { background: #b3413d; } .dot-白 { background: #d8cfa0; border:1px solid #b7a65f; }
+.dot-綠 { background: #2e7d4f; } .dot-金\/白 { background: #d4af37; } .dot-黑 { background: #333; } .dot-灰 { background: #999; }
+.cal-legend { display: flex; gap: .8rem; flex-wrap: wrap; font-size: .75rem; color: var(--ink-soft); margin-top: .5rem; }
+.cal-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: .25rem; }
+
+/* worship */
+.worship-step { margin: .9rem 0; padding: .7rem .9rem; background: #fffdf8; border: 1px solid var(--line); border-radius: 10px; }
+.worship-step .who { font-weight: 700; color: var(--gold); font-size: .78rem; letter-spacing: .2em; }
+.worship-step .text { margin-top: .3rem; white-space: pre-wrap; }
+.worship-step .rubric { font-style: italic; font-size: .82rem; color: var(--ink-soft); }
+.leader { font-weight: 700; }
+.resp { color: var(--ink-soft); }
+
+/* tables */
+table.stats { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .9rem; }
+table.stats th, table.stats td { border-bottom: 1px solid var(--line); padding: .5rem .6rem; text-align: left; }
+table.stats th { color: var(--gold); letter-spacing: .1em; font-size: .8rem; }
+table.stats tr:hover td { background: var(--paper-2); }
+
+/* responsive */
+@media (max-width: 640px) {
+  header.site { flex-wrap: wrap; }
+  main { padding: 1rem .8rem 3rem; }
+  .banner h1 { font-size: 1.3rem; }
+  .grid { gap: 3px; }
+  .cal-cell { min-height: 58px; }
+}
+
+/* footer */
+footer.site { text-align: center; color: var(--ink-soft); font-size: .8rem; padding: 1.5rem 1rem 3rem; border-top: 1px solid var(--line); }
+.nav-date { display: flex; gap: .5rem; align-items: center; margin: .8rem 0; justify-content: center; }
+.nav-date .btn { font-size: .85rem; }
+.legend-color { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+.hidden { display: none !important; }
+.note { font-size: .82rem; color: var(--ink-soft); background: var(--paper-2); padding: .5rem .8rem; border-radius: 8px; margin: .5rem 0; }
+.reading.rt-morning { border-left-color: #3f8fa8; }
+.reading.rt-morning .rtag { background: #3f8fa8; }
+.reading.rt-evening { border-left-color: #7a6aa8; }
+.reading.rt-evening .rtag { background: #7a6aa8; }

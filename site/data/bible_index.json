@@ -1,0 +1,590 @@
+{
+ "by_abbr": {
+  "gn": {
+   "name_en": "Genesis",
+   "chapters": 50,
+   "file": "gn.json",
+   "name_zh": "創世記"
+  },
+  "ex": {
+   "name_en": "Exodus",
+   "chapters": 40,
+   "file": "ex.json",
+   "name_zh": "出埃及記"
+  },
+  "lv": {
+   "name_en": "Leviticus",
+   "chapters": 27,
+   "file": "lv.json",
+   "name_zh": "利未記"
+  },
+  "nm": {
+   "name_en": "Numbers",
+   "chapters": 36,
+   "file": "nm.json",
+   "name_zh": "民數記"
+  },
+  "dt": {
+   "name_en": "Deuteronomy",
+   "chapters": 34,
+   "file": "dt.json",
+   "name_zh": "申命記"
+  },
+  "js": {
+   "name_en": "Joshua",
+   "chapters": 24,
+   "file": "js.json",
+   "name_zh": "約書亞記"
+  },
+  "jud": {
+   "name_en": "Judges",
+   "chapters": 21,
+   "file": "jud.json",
+   "name_zh": "士師記"
+  },
+  "rt": {
+   "name_en": "Ruth",
+   "chapters": 4,
+   "file": "rt.json",
+   "name_zh": "路得記"
+  },
+  "1sm": {
+   "name_en": "1 Samuel",
+   "chapters": 31,
+   "file": "1sm.json",
+   "name_zh": "撒母耳記上"
+  },
+  "2sm": {
+   "name_en": "2 Samuel",
+   "chapters": 24,
+   "file": "2sm.json",
+   "name_zh": "撒母耳記下"
+  },
+  "1kgs": {
+   "name_en": "1 Kings",
+   "chapters": 22,
+   "file": "1kgs.json",
+   "name_zh": "列王紀上"
+  },
+  "2kgs": {
+   "name_en": "2 Kings",
+   "chapters": 25,
+   "file": "2kgs.json",
+   "name_zh": "列王紀下"
+  },
+  "1ch": {
+   "name_en": "1 Chronicles",
+   "chapters": 29,
+   "file": "1ch.json",
+   "name_zh": "歷代志上"
+  },
+  "2ch": {
+   "name_en": "2 Chronicles",
+   "chapters": 36,
+   "file": "2ch.json",
+   "name_zh": "歷代志下"
+  },
+  "ezr": {
+   "name_en": "Ezra",
+   "chapters": 10,
+   "file": "ezr.json",
+   "name_zh": "以斯拉記"
+  },
+  "ne": {
+   "name_en": "Nehemiah",
+   "chapters": 13,
+   "file": "ne.json",
+   "name_zh": "尼希米記"
+  },
+  "et": {
+   "name_en": "Esther",
+   "chapters": 10,
+   "file": "et.json",
+   "name_zh": "以斯帖記"
+  },
+  "job": {
+   "name_en": "Job",
+   "chapters": 42,
+   "file": "job.json",
+   "name_zh": "約伯記"
+  },
+  "ps": {
+   "name_en": "Psalms",
+   "chapters": 150,
+   "file": "ps.json",
+   "name_zh": "詩篇"
+  },
+  "prv": {
+   "name_en": "Proverbs",
+   "chapters": 31,
+   "file": "prv.json",
+   "name_zh": "箴言"
+  },
+  "ec": {
+   "name_en": "Ecclesiastes",
+   "chapters": 12,
+   "file": "ec.json",
+   "name_zh": "傳道書"
+  },
+  "so": {
+   "name_en": "Song of Solomon",
+   "chapters": 8,
+   "file": "so.json",
+   "name_zh": "雅歌"
+  },
+  "is": {
+   "name_en": "Isaiah",
+   "chapters": 66,
+   "file": "is.json",
+   "name_zh": "以賽亞書"
+  },
+  "jr": {
+   "name_en": "Jeremiah",
+   "chapters": 52,
+   "file": "jr.json",
+   "name_zh": "耶利米書"
+  },
+  "lm": {
+   "name_en": "Lamentations",
+   "chapters": 5,
+   "file": "lm.json",
+   "name_zh": "耶利米哀歌"
+  },
+  "ez": {
+   "name_en": "Ezekiel",
+   "chapters": 48,
+   "file": "ez.json",
+   "name_zh": "以西結書"
+  },
+  "dn": {
+   "name_en": "Daniel",
+   "chapters": 12,
+   "file": "dn.json",
+   "name_zh": "但以理書"
+  },
+  "ho": {
+   "name_en": "Hosea",
+   "chapters": 14,
+   "file": "ho.json",
+   "name_zh": "何西阿書"
+  },
+  "jl": {
+   "name_en": "Joel",
+   "chapters": 3,
+   "file": "jl.json",
+   "name_zh": "約珥書"
+  },
+  "am": {
+   "name_en": "Amos",
+   "chapters": 9,
+   "file": "am.json",
+   "name_zh": "阿摩司書"
+  },
+  "ob": {
+   "name_en": "Obadiah",
+   "chapters": 1,
+   "file": "ob.json",
+   "name_zh": "俄巴底亞書"
+  },
+  "jn": {
+   "name_en": "Jonah",
+   "chapters": 4,
+   "file": "jn.json",
+   "name_zh": "約拿書"
+  },
+  "mi": {
+   "name_en": "Micah",
+   "chapters": 7,
+   "file": "mi.json",
+   "name_zh": "彌迦書"
+  },
+  "na": {
+   "name_en": "Nahum",
+   "chapters": 3,
+   "file": "na.json",
+   "name_zh": "那鴻書"
+  },
+  "hk": {
+   "name_en": "Habakkuk",
+   "chapters": 3,
+   "file": "hk.json",
+   "name_zh": "哈巴谷書"
+  },
+  "zp": {
+   "name_en": "Zephaniah",
+   "chapters": 3,
+   "file": "zp.json",
+   "name_zh": "西番雅書"
+  },
+  "hg": {
+   "name_en": "Haggai",
+   "chapters": 2,
+   "file": "hg.json",
+   "name_zh": "哈該書"
+  },
+  "zc": {
+   "name_en": "Zechariah",
+   "chapters": 14,
+   "file": "zc.json",
+   "name_zh": "撒迦利亞書"
+  },
+  "ml": {
+   "name_en": "Malachi",
+   "chapters": 4,
+   "file": "ml.json",
+   "name_zh": "瑪拉基書"
+  },
+  "mt": {
+   "name_en": "Matthew",
+   "chapters": 28,
+   "file": "mt.json",
+   "name_zh": "馬太福音"
+  },
+  "mk": {
+   "name_en": "Mark",
+   "chapters": 16,
+   "file": "mk.json",
+   "name_zh": "馬可福音"
+  },
+  "lk": {
+   "name_en": "Luke",
+   "chapters": 24,
+   "file": "lk.json",
+   "name_zh": "路加福音"
+  },
+  "jo": {
+   "name_en": "John",
+   "chapters": 21,
+   "file": "jo.json",
+   "name_zh": "約翰福音"
+  },
+  "act": {
+   "name_en": "Acts",
+   "chapters": 28,
+   "file": "act.json",
+   "name_zh": "使徒行傳"
+  },
+  "rm": {
+   "name_en": "Romans",
+   "chapters": 16,
+   "file": "rm.json",
+   "name_zh": "羅馬書"
+  },
+  "1co": {
+   "name_en": "1 Corinthians",
+   "chapters": 16,
+   "file": "1co.json",
+   "name_zh": "哥林多前書"
+  },
+  "2co": {
+   "name_en": "2 Corinthians",
+   "chapters": 13,
+   "file": "2co.json",
+   "name_zh": "哥林多後書"
+  },
+  "gl": {
+   "name_en": "Galatians",
+   "chapters": 6,
+   "file": "gl.json",
+   "name_zh": "加拉太書"
+  },
+  "eph": {
+   "name_en": "Ephesians",
+   "chapters": 6,
+   "file": "eph.json",
+   "name_zh": "以弗所書"
+  },
+  "ph": {
+   "name_en": "Philippians",
+   "chapters": 4,
+   "file": "ph.json",
+   "name_zh": "腓立比書"
+  },
+  "cl": {
+   "name_en": "Colossians",
+   "chapters": 4,
+   "file": "cl.json",
+   "name_zh": "歌羅西書"
+  },
+  "1ts": {
+   "name_en": "1 Thessalonians",
+   "chapters": 5,
+   "file": "1ts.json",
+   "name_zh": "帖撒羅尼迦前書"
+  },
+  "2ts": {
+   "name_en": "2 Thessalonians",
+   "chapters": 3,
+   "file": "2ts.json",
+   "name_zh": "帖撒羅尼迦後書"
+  },
+  "1tm": {
+   "name_en": "1 Timothy",
+   "chapters": 6,
+   "file": "1tm.json",
+   "name_zh": "提摩太前書"
+  },
+  "2tm": {
+   "name_en": "2 Timothy",
+   "chapters": 4,
+   "file": "2tm.json",
+   "name_zh": "提摩太後書"
+  },
+  "tt": {
+   "name_en": "Titus",
+   "chapters": 3,
+   "file": "tt.json",
+   "name_zh": "提多書"
+  },
+  "phm": {
+   "name_en": "Philemon",
+   "chapters": 1,
+   "file": "phm.json",
+   "name_zh": "腓利門書"
+  },
+  "hb": {
+   "name_en": "Hebrews",
+   "chapters": 13,
+   "file": "hb.json",
+   "name_zh": "希伯來書"
+  },
+  "jm": {
+   "name_en": "James",
+   "chapters": 5,
+   "file": "jm.json",
+   "name_zh": "雅各書"
+  },
+  "1pe": {
+   "name_en": "1 Peter",
+   "chapters": 5,
+   "file": "1pe.json",
+   "name_zh": "彼得前書"
+  },
+  "2pe": {
+   "name_en": "2 Peter",
+   "chapters": 3,
+   "file": "2pe.json",
+   "name_zh": "彼得後書"
+  },
+  "1jo": {
+   "name_en": "1 John",
+   "chapters": 5,
+   "file": "1jo.json",
+   "name_zh": "約翰壹書"
+  },
+  "2jo": {
+   "name_en": "2 John",
+   "chapters": 1,
+   "file": "2jo.json",
+   "name_zh": "約翰貳書"
+  },
+  "3jo": {
+   "name_en": "3 John",
+   "chapters": 1,
+   "file": "3jo.json",
+   "name_zh": "約翰參書"
+  },
+  "jd": {
+   "name_en": "Jude",
+   "chapters": 1,
+   "file": "jd.json",
+   "name_zh": "猶大書"
+  },
+  "re": {
+   "name_en": "Revelation",
+   "chapters": 22,
+   "file": "re.json",
+   "name_zh": "啟示錄"
+  },
+  "多比傳": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "多比傳",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "猶滴傳": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "猶滴傳",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "便西拉智訓": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "便西拉智訓",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "所羅門智訓": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "所羅門智訓",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "以斯拉續編上卷": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "以斯拉續編上卷",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "以斯拉續編下卷": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "以斯拉續編下卷",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "巴錄書": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "巴錄書",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "耶利米書信": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "耶利米書信",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "瑪拿西禱言": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "瑪拿西禱言",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "三童歌": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "三童歌",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "蘇撒拿傳": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "蘇撒拿傳",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "彼勒與大龍": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "彼勒與大龍",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "以斯帖補編": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "以斯帖補編",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "馬加比一書": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "馬加比一書",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  },
+  "馬加比二書": {
+   "name_en": "Apocrypha (not bundled)",
+   "name_zh": "馬加比二書",
+   "chapters": 0,
+   "file": null,
+   "apocrypha": true
+  }
+ },
+ "by_zh": {
+  "創世記": "gn",
+  "出埃及記": "ex",
+  "利未記": "lv",
+  "民數記": "nm",
+  "申命記": "dt",
+  "約書亞記": "js",
+  "士師記": "jud",
+  "路得記": "rt",
+  "撒母耳記上": "1sm",
+  "撒母耳記下": "2sm",
+  "列王紀上": "1kgs",
+  "列王紀下": "2kgs",
+  "歷代志上": "1ch",
+  "歷代志下": "2ch",
+  "以斯拉記": "ezr",
+  "尼希米記": "ne",
+  "以斯帖記": "et",
+  "約伯記": "job",
+  "詩篇": "ps",
+  "箴言": "prv",
+  "傳道書": "ec",
+  "雅歌": "so",
+  "以賽亞書": "is",
+  "耶利米書": "jr",
+  "耶利米哀歌": "lm",
+  "以西結書": "ez",
+  "但以理書": "dn",
+  "何西阿書": "ho",
+  "約珥書": "jl",
+  "阿摩司書": "am",
+  "俄巴底亞書": "ob",
+  "約拿書": "jn",
+  "彌迦書": "mi",
+  "那鴻書": "na",
+  "哈巴谷書": "hk",
+  "西番雅書": "zp",
+  "哈該書": "hg",
+  "撒迦利亞書": "zc",
+  "瑪拉基書": "ml",
+  "馬太福音": "mt",
+  "馬可福音": "mk",
+  "路加福音": "lk",
+  "約翰福音": "jo",
+  "使徒行傳": "act",
+  "羅馬書": "rm",
+  "哥林多前書": "1co",
+  "哥林多後書": "2co",
+  "加拉太書": "gl",
+  "以弗所書": "eph",
+  "腓立比書": "ph",
+  "歌羅西書": "cl",
+  "帖撒羅尼迦前書": "1ts",
+  "帖撒羅尼迦後書": "2ts",
+  "提摩太前書": "1tm",
+  "提摩太後書": "2tm",
+  "提多書": "tt",
+  "腓利門書": "phm",
+  "希伯來書": "hb",
+  "雅各書": "jm",
+  "彼得前書": "1pe",
+  "彼得後書": "2pe",
+  "約翰壹書": "1jo",
+  "約翰貳書": "2jo",
+  "約翰參書": "3jo",
+  "猶大書": "jd",
+  "啟示錄": "re"
+ },
+ "apocrypha": [
+  "多比傳",
+  "猶滴傳",
+  "便西拉智訓",
+  "所羅門智訓",
+  "以斯拉續編上卷",
+  "以斯拉續編下卷",
+  "巴錄書",
+  "耶利米書信",
+  "瑪拿西禱言",
+  "三童歌",
+  "蘇撒拿傳",
+  "彼勒與大龍",
+  "以斯帖補編",
+  "馬加比一書",
+  "馬加比二書"
+ ]
+}
