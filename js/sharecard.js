@@ -118,76 +118,79 @@
     ctx.restore();
 
     // ---------- 白框内容：上下左右居中 ----------
-    const innerX = cardX + 70;
-    const innerW = cardW - 140;
+    const innerX = cardX + 80;
+    const innerW = cardW - 160;
+    const labelW = 220;          // 类别标签宽度
+    const labelGap = 26;         // 标签与经文的间距
+    const refW = innerW - labelW - labelGap;
 
-    // 先计算内容总高度
+    // 计算每行经课（标签 + 经文）
     const readingItems = ORDER.filter(k => opt[k]).map(k => {
       const refStr = firstOf(opt[k]);
-      ctx.font = '36px ' + FONT;
-      const lines = wrapText(ctx, refStr, innerW - 40, 2);
+      ctx.font = '34px ' + FONT;
+      const lines = wrapText(ctx, refStr, refW, 2);
       return { k, refStr, lines };
     });
 
+    // 内容总高度（用于垂直居中）
     let contentH = 0;
-    contentH += 52;            // 今日经课标题
-    contentH += 46;            // 分隔线
+    contentH += 56;              // 今日经课标题
+    contentH += 44;              // 分隔线
     for (const it of readingItems) {
-      contentH += 40;          // 类别标签
-      contentH += Math.max(it.lines.length, 1) * 50;
-      contentH += 26;          // 行间距
+      contentH += Math.max(it.lines.length, 1) * 46 + 34;
     }
-    if (commentary && commentary.keyVerse) {
-      contentH += 24;
-      contentH += 236;         // 金句框
-    }
+    if (commentary && commentary.keyVerse) contentH += 28 + 240;
 
-    let y = cardY + Math.max(40, (cardH - contentH) / 2) + 6;
+    let y = cardY + Math.max(36, (cardH - contentH) / 2) + 6;
 
     // 今日经课标题（居中）
     ctx.textAlign = 'center';
     ctx.fillStyle = '#a8883e';
     ctx.font = 'bold 38px ' + FONT;
     ctx.fillText(I18N.t('cardSection'), W / 2, y + 36);
-    y += 52;
+    y += 56;
     ctx.strokeStyle = '#e2d6c3';
     ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(W / 2 - 180, y + 8); ctx.lineTo(W / 2 + 180, y + 8); ctx.stroke();
-    y += 46;
+    ctx.beginPath(); ctx.moveTo(W / 2 - 180, y + 6); ctx.lineTo(W / 2 + 180, y + 6); ctx.stroke();
+    y += 44;
 
-    // 四段经课（无背景条，居中）
+    // 经课行：标签 + 经文 同行，整块水平居中
+    const rowStartX = W / 2 - innerW / 2;
     for (const it of readingItems) {
-      ctx.textAlign = 'center';
+      const lines = it.lines;
+      // 标签（左对齐，颜色加粗）
+      ctx.textAlign = 'left';
       ctx.fillStyle = TAG_COLOR[it.k];
       ctx.font = 'bold 30px ' + FONT;
-      ctx.fillText(TAG_LABEL[it.k], W / 2, y + 28);
-      y += 40;
+      ctx.fillText(TAG_LABEL[it.k], rowStartX, y + 32);
+      // 经文（左对齐，深色）
       ctx.fillStyle = '#2c2420';
-      ctx.font = '36px ' + FONT;
-      it.lines.forEach((ln, i) => ctx.fillText(ln, W / 2, y + i * 50));
-      y += Math.max(it.lines.length, 1) * 50 + 26;
+      ctx.font = '34px ' + FONT;
+      lines.forEach((ln, i) => ctx.fillText(ln, rowStartX + labelW + labelGap, y + 34 + i * 46));
+      y += Math.max(lines.length, 1) * 46 + 34;
     }
 
-    // 今日金句（居中框）
+    // 今日金句（居中框，宽度与经课块一致）
     if (commentary && commentary.keyVerse) {
-      y += 24;
-      const boxX = W / 2 - 390, boxW = 780, boxH = 236;
+      y += 28;
+      const boxX = rowStartX, boxW = innerW, boxH = 240;
       ctx.fillStyle = lighten(main, 0.82);
-      roundRect(ctx, boxX, y - 24, boxW, boxH, 18);
+      roundRect(ctx, boxX, y - 22, boxW, boxH, 18);
       ctx.fill();
-      ctx.textAlign = 'center';
+      ctx.textAlign = 'left';
       ctx.fillStyle = '#a8883e';
       ctx.font = 'bold 28px ' + FONT;
-      ctx.fillText(I18N.t('cardKeyVerse'), W / 2, y + 22);
+      ctx.fillText(I18N.t('cardKeyVerse'), boxX + 24, y + 22);
       ctx.fillStyle = '#3a332c';
       ctx.font = 'italic 30px ' + FONT;
       const kv = '「' + (commentary.keyVerse.text || '') + '」';
-      const kvLines = wrapText(ctx, kv, boxW - 80, 3);
-      kvLines.forEach((ln, i) => ctx.fillText(ln, W / 2, y + 68 + i * 42));
+      const kvLines = wrapText(ctx, kv, boxW - 48, 3);
+      kvLines.forEach((ln, i) => ctx.fillText(ln, boxX + 24, y + 68 + i * 42));
       ctx.fillStyle = '#5c5148';
       ctx.font = '26px ' + FONT;
-      ctx.fillText('—— ' + commentary.keyVerse.ref, W / 2, y + boxH - 16);
-      y += boxH + 26;
+      ctx.textAlign = 'right';
+      ctx.fillText('—— ' + commentary.keyVerse.ref, boxX + boxW - 24, y + boxH - 18);
+      y += boxH + 28;
     }
 
     // ---------- 二维码（无链接文字） ----------
