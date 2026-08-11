@@ -5,8 +5,6 @@
   const LANGS = [
     { id: 'zhCN', label: '简体中文' },
     { id: 'zhTW', label: '繁體中文' },
-    { id: 'en', label: 'English' },
-    { id: 'ja', label: '日本語' },
   ];
 
   // zhCN / en / ja；zhTW 由 zhCN 经 ZHConv 自动转换
@@ -156,12 +154,13 @@
   };
 
   let lang = 'zhCN';
-  try { const s = localStorage.getItem('lang'); if (s) lang = s; } catch (e) {}
+  try { const s = localStorage.getItem('lang'); if (s === 'zhTW') lang = 'zhTW'; } catch (e) {}
 
   function setLang(l) {
-    lang = LANGS.some(x => x.id === l) ? l : 'zhCN';
+    // 仅支持简体中文 / 繁体中文（英文、日文版本已移除）
+    lang = (l === 'zhTW') ? 'zhTW' : 'zhCN';
     try { localStorage.setItem('lang', lang); } catch (e) {}
-    document.documentElement.lang = lang === 'zhCN' ? 'zh-Hans' : lang === 'zhTW' ? 'zh-Hant' : lang === 'en' ? 'en' : 'ja';
+    document.documentElement.lang = lang === 'zhTW' ? 'zh-Hant' : 'zh-Hans';
   }
   function getLang() { return lang; }
 

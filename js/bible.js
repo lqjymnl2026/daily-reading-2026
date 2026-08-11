@@ -11,7 +11,8 @@
     // apocrypha books have no bundled text
     const apoc = ['to','jdt','sir','wis','1esd','2esd','bar','epjr','prma','3song','sus','bel','addest','1ma','2ma'];
     if (apoc.indexOf(abbr) >= 0) return Promise.resolve(null);
-    pending[abbr] = fetch(`data/bible/${abbr}.json`)
+    const dir = (global.I18N && global.I18N.getLang() === 'zhTW') ? 'data/bible_tw' : 'data/bible';
+    pending[abbr] = fetch(`${dir}/${abbr}.json`)
       .then(r => { if (!r.ok) throw new Error('no book ' + abbr); return r.json(); })
       .then(chs => { cache[abbr] = chs; return chs; })
       .finally(() => { delete pending[abbr]; });
