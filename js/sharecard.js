@@ -127,7 +127,7 @@
     // 计算每行经课（标签 + 经文）
     const readingItems = ORDER.filter(k => opt[k]).map(k => {
       const refStr = firstOf(opt[k]);
-      ctx.font = '34px ' + FONT;
+      ctx.font = '32px ' + FONT;
       const lines = wrapText(ctx, refStr, refW, 2);
       return { k, refStr, lines };
     });
@@ -137,7 +137,7 @@
     contentH += 56;              // 今日经课标题
     contentH += 44;              // 分隔线
     for (const it of readingItems) {
-      contentH += Math.max(it.lines.length, 1) * 46 + 34;
+      contentH += Math.max(it.lines.length, 1) * 44 + 32;
     }
     if (commentary && commentary.keyVerse) contentH += 28 + 240;
 
@@ -165,9 +165,9 @@
       ctx.fillText(TAG_LABEL[it.k], rowStartX, y + 32);
       // 经文（左对齐，深色）
       ctx.fillStyle = '#2c2420';
-      ctx.font = '34px ' + FONT;
-      lines.forEach((ln, i) => ctx.fillText(ln, rowStartX + labelW + labelGap, y + 34 + i * 46));
-      y += Math.max(lines.length, 1) * 46 + 34;
+      ctx.font = '32px ' + FONT;
+      lines.forEach((ln, i) => ctx.fillText(ln, rowStartX + labelW + labelGap, y + 32 + i * 44));
+      y += Math.max(lines.length, 1) * 44 + 32;
     }
 
     // 今日金句（居中框，宽度与经课块一致）
@@ -189,7 +189,7 @@
       ctx.fillStyle = '#5c5148';
       ctx.font = '26px ' + FONT;
       ctx.textAlign = 'right';
-      ctx.fillText('—— ' + commentary.keyVerse.ref, boxX + boxW - 24, y + boxH - 18);
+      ctx.fillText('—— ' + commentary.keyVerse.ref, boxX + boxW - 24, y + boxH - 54);
       y += boxH + 28;
     }
 
