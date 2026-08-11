@@ -60,6 +60,31 @@
   function colorHexSoft(color) { const b = colorBase(color); return (b && COLOR_HEX_SOFT[b]) || '#3d322a'; }
   function colorDesc(color) { const b = colorBase(color); return (b && COLOR_DESC[b]) || ''; }
 
+  const VIEW_KEY = 'view-mode';
+  const VIEW_ORDER = ['auto', 'mobile', 'desktop'];
+  function viewLabel(mode) {
+    if (mode === 'mobile') return '📱 手机版';
+    if (mode === 'desktop') return '🖥 电脑版';
+    return '🔄 自动';
+  }
+  function applyViewMode() {
+    let mode = 'auto';
+    try { mode = localStorage.getItem(VIEW_KEY) || 'auto'; } catch (e) {}
+    const el = document.documentElement;
+    el.classList.remove('force-mobile', 'force-desktop');
+    if (mode === 'mobile') el.classList.add('force-mobile');
+    if (mode === 'desktop') el.classList.add('force-desktop');
+    const btn = document.getElementById('view-toggle');
+    if (btn) btn.textContent = viewLabel(mode);
+    return mode;
+  }
+  function cycleViewMode() {
+    const cur = applyViewMode();
+    const next = VIEW_ORDER[(VIEW_ORDER.indexOf(cur) + 1) % VIEW_ORDER.length];
+    try { localStorage.setItem(VIEW_KEY, next); } catch (e) {}
+    applyViewMode();
+  }
+
   function renderHeader(active) {
     const nav = [
       ['index.html', '今日读经', 'today'],
@@ -73,7 +98,10 @@
     el.innerHTML =
       '<a class="brand" href="index.html">每日读经<small>2025–2026 · 香港圣公会读经表</small><span class="theme-dot" id="theme-dot" title="今日礼仪颜色"></span></a>' +
       '<nav>' + nav.map(([href, label, key]) =>
-        `<a href="${href}" class="${key === active ? 'active' : ''}">${label}</a>`).join('') + '</nav>';
+        `<a href="${href}" class="${key === active ? 'active' : ''}">${label}</a>`).join('') + '</nav>' +
+      '<button class="view-toggle" id="view-toggle" title="点击切换：自动 / 手机版 / 电脑版">🔄 自动</button>';
+    el.querySelector('#view-toggle').addEventListener('click', cycleViewMode);
+    applyViewMode();
     // 全站导航主题色 = 今日礼仪颜色
     loadData().then(() => {
       const day = byDate[todayStr()];
@@ -93,5 +121,5 @@
     </div>`;
   }
 
-  global.Common = { loadData, getDay, todayStr, parseDate, formatCN, weekdayCN, addDays, seasonClass, colorClass, esc, renderHeader, navDate, colorBase, colorHex, colorHexSoft, colorDesc, COLOR_HEX, COLOR_DESC };
+  global.Common = { loadData, getDay, todayStr, parseDate, formatCN, weekdayCN, addDays, seasonClass, colorClass, esc, renderHeader, navDate, colorBase, colorHex, colorHexSoft, colorDesc, COLOR_HEX, COLOR_DESC, applyViewMode, cycleViewMode, viewLabel };
 })(window);

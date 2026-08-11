@@ -202,11 +202,11 @@ table.stats tr:hover td { background: var(--paper-2); }
 
 /* responsive */
 @media (max-width: 640px) {
-  header.site { flex-wrap: wrap; }
-  main { padding: 1rem .8rem 3rem; }
-  .banner h1 { font-size: 1.3rem; }
-  .grid { gap: 3px; }
-  .cal-cell { min-height: 58px; }
+  html:not(.force-desktop) header.site { flex-wrap: wrap; }
+  html:not(.force-desktop) main { padding: 1rem .8rem 3rem; }
+  html:not(.force-desktop) .banner h1 { font-size: 1.3rem; }
+  html:not(.force-desktop) .grid { gap: 3px; }
+  html:not(.force-desktop) .cal-cell { min-height: 58px; }
 }
 
 .color-show { display: flex; align-items: center; gap: .8rem; margin: .6rem 0; padding: .6rem .9rem; background: var(--paper-2); border: 1px solid var(--line); border-radius: 10px; }
@@ -219,6 +219,24 @@ table.stats tr:hover td { background: var(--paper-2); }
 
 /* footer */
 footer.site { text-align: center; color: var(--ink-soft); font-size: .8rem; padding: 1.5rem 1rem 3rem; border-top: 1px solid var(--line); }
+.view-toggle {
+  cursor: pointer; border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.08);
+  color: #f5ecd9; border-radius: 999px; padding: .28rem .7rem; font-size: .8rem;
+  font-family: inherit; white-space: nowrap; transition: background .15s ease;
+}
+.view-toggle:hover { background: rgba(255,255,255,.18); }
+
+/* ===== 手动视图模式 ===== */
+html.force-mobile header.site { flex-wrap: wrap; }
+html.force-mobile main { max-width: 480px; padding: 1rem .8rem 3rem; }
+html.force-mobile .banner { padding: 1.1rem 1rem; }
+html.force-mobile .banner h1 { font-size: 1.3rem; }
+html.force-mobile .grid { gap: 3px; }
+html.force-mobile .cal-cell { min-height: 58px; }
+
+html.force-desktop main { min-width: 900px; }
+html.force-desktop { overflow-x: auto; }
+
 .nav-date { display: flex; gap: .5rem; align-items: center; margin: .8rem 0; justify-content: center; }
 .nav-date .btn { font-size: .85rem; }
 .legend-color { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
