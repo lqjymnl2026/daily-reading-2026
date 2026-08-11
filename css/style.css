@@ -200,6 +200,19 @@ table.stats th, table.stats td { border-bottom: 1px solid var(--line); padding: 
 table.stats th { color: var(--gold); letter-spacing: .1em; font-size: .8rem; }
 table.stats tr:hover td { background: var(--paper-2); }
 
+/* share card modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(20,15,10,.55); z-index: 100;
+  display: flex; align-items: center; justify-content: center; padding: 1rem;
+}
+.modal {
+  background: var(--paper); border-radius: 16px; max-width: 520px; width: 100%;
+  padding: 1.2rem; box-shadow: 0 12px 40px rgba(0,0,0,.35); max-height: 92vh; overflow-y: auto;
+}
+.modal h3 { color: var(--gold); letter-spacing: .1em; margin-top: 0; }
+.card-preview { text-align: center; background: #fff; border-radius: 10px; padding: .4rem; border: 1px solid var(--line); }
+.card-preview img { max-width: 100%; max-height: 60vh; border-radius: 8px; display: inline-block; }
+
 /* responsive */
 @media (max-width: 640px) {
   html:not(.force-desktop) header.site { flex-wrap: wrap; }

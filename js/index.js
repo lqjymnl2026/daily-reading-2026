@@ -9,6 +9,15 @@
       renderHero(today);
       renderToday(today);
       renderQuick();
+      const openShare = () => window.ShareCard.openShareModal(today);
+      const so = document.getElementById('share-open');
+      if (so) so.addEventListener('click', openShare);
+      const so2 = document.getElementById('share-open-2');
+      if (so2) so2.addEventListener('click', openShare);
+      const close = document.getElementById('share-close');
+      if (close) close.addEventListener('click', () => window.ShareCard.closeShareModal());
+      const overlay = document.getElementById('share-modal');
+      if (overlay) overlay.addEventListener('click', (e) => { if (e.target === overlay) window.ShareCard.closeShareModal(); });
     });
   }
 
@@ -23,6 +32,7 @@
           <span class="chip ${C.colorClass(day.color)}">礼仪颜色：${C.esc(day.color || '—')}</span>
           ${day.lunar ? `<span class="chip">农历 ${C.esc(day.lunar)}</span>` : ''}
           <a class="chip chip-read" href="lesson.html?date=${day.date}" title="进入今日读经一课">我要读经</a>
+          <a class="chip chip-read" id="share-open" title="生成今日读经分享卡">📤 分享卡</a>
           ${day.solar_term ? `<span class="chip">节气：${C.esc(day.solar_term)}</span>` : ''}
         </div>
       </div>`;
@@ -58,6 +68,7 @@
         ${day.communion.options.length > 1 ? '<p class="note">本主日提供「互补式／半连读式」两套经课，可于每日一课页面查看。</p>' : ''}
         <div class="btnrow">
           <a class="btn primary" href="lesson.html?date=${day.date}">进入今日一课 →</a>
+          <button class="btn" id="share-open-2">📤 生成分享卡</button>
           <a class="btn" href="worship.html?date=${day.date}&mode=morning">线上崇拜</a>
           <a class="btn" href="calendar.html">查看读经历</a>
         </div>

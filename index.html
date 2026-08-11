@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>今日读经 · 每日读经 2025–2026</title>
-<link rel="stylesheet" href="css/style.css?v20260811b">
+<link rel="stylesheet" href="css/style.css?v20260811c">
 </head>
 <body>
 <header class="site" id="site-header"></header>
@@ -13,14 +13,27 @@
   <div id="today"></div>
   <div id="quick"></div>
 </main>
+<div class="modal-overlay hidden" id="share-modal">
+  <div class="modal">
+    <h3>今日读经分享卡</h3>
+    <div class="card-preview"><img id="share-card-img" alt="今日读经分享卡"></div>
+    <div class="btnrow">
+      <button class="btn primary" id="share-save">💾 保存图片</button>
+      <button class="btn" id="share-share">📤 分享</button>
+      <button class="btn" id="share-close">关闭</button>
+    </div>
+    <p class="note" id="share-status">生成中…</p>
+  </div>
+</div>
 <footer class="site">
   每日读经 2025–2026 · 经课资料取自《香港圣公会2026年读经表》· 经文采用公有领域《和合本》
 </footer>
-<script src="js/common.js?v20260811b"></script>
-<script src="js/refs.js?v20260811b"></script>
-<script src="js/bible.js?v20260811b"></script>
-<script src="js/tts.js?v20260811b"></script>
-<script src="js/commentary.js?v20260811b"></script>
-<script src="js/index.js?v20260811b"></script>
+<script src="js/common.js?v20260811c"></script>
+<script src="js/refs.js?v20260811c"></script>
+<script src="js/bible.js?v20260811c"></script>
+<script src="js/tts.js?v20260811c"></script>
+<script src="js/commentary.js?v20260811c"></script>
+<script src="js/sharecard.js?v20260811c"></script>
+<script src="js/index.js?v20260811c"></script>
 </body>
 </html>
