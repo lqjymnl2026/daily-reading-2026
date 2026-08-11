@@ -132,6 +132,19 @@
       return { k, refStr, lines };
     });
 
+    // 今日金句：每行 12 字、左对齐、框高自适应
+    const kvObj = (commentary && commentary.keyVerse) ? commentary.keyVerse : null;
+    let kvLines = [];
+    let kvBoxH = 0;
+    if (kvObj) {
+      const chars = Array.from(kvObj.text || '');
+      for (let i = 0; i < chars.length; i += 12) kvLines.push(chars.slice(i, i + 12).join(''));
+      if (kvLines.length > 5) kvLines = kvLines.slice(0, 5);
+      if (kvLines.length) kvLines[0] = '「' + kvLines[0];
+      if (kvLines.length) kvLines[kvLines.length - 1] = kvLines[kvLines.length - 1] + '」';
+      kvBoxH = 96 + kvLines.length * 44;
+    }
+
     // 内容总高度（用于垂直居中）
     let contentH = 0;
     contentH += 56;              // 今日经课标题
@@ -139,7 +152,7 @@
     for (const it of readingItems) {
       contentH += Math.max(it.lines.length, 1) * 44 + 32;
     }
-    if (commentary && commentary.keyVerse) contentH += 28 + 240;
+    if (kvLines.length) contentH += 28 + kvBoxH;
 
     let y = cardY + Math.max(36, (cardH - contentH) / 2) + 6;
 
@@ -162,7 +175,7 @@
       ctx.textAlign = 'left';
       ctx.fillStyle = TAG_COLOR[it.k];
       ctx.font = 'bold 30px ' + FONT;
-      ctx.fillText(TAG_LABEL[it.k], rowStartX, y + 32);
+      ctx.fillText(TAG_LABEL[it.k], rowStartX + 24, y + 32);
       // 经文（左对齐，深色）
       ctx.fillStyle = '#2c2420';
       ctx.font = '32px ' + FONT;
@@ -170,10 +183,10 @@
       y += Math.max(lines.length, 1) * 44 + 32;
     }
 
-    // 今日金句（居中框，宽度与经课块一致）
-    if (commentary && commentary.keyVerse) {
+    // 绘制今日金句框
+    if (kvObj) {
       y += 28;
-      const boxX = rowStartX, boxW = innerW, boxH = 240;
+      const boxX = rowStartX, boxW = innerW, boxH = kvBoxH;
       ctx.fillStyle = lighten(main, 0.82);
       roundRect(ctx, boxX, y - 22, boxW, boxH, 18);
       ctx.fill();
@@ -182,14 +195,12 @@
       ctx.font = 'bold 28px ' + FONT;
       ctx.fillText(I18N.t('cardKeyVerse'), boxX + 24, y + 22);
       ctx.fillStyle = '#3a332c';
-      ctx.font = 'italic 30px ' + FONT;
-      const kv = '「' + (commentary.keyVerse.text || '') + '」';
-      const kvLines = wrapText(ctx, kv, boxW - 48, 3);
-      kvLines.forEach((ln, i) => ctx.fillText(ln, boxX + 24, y + 68 + i * 42));
+      ctx.font = '30px ' + FONT;
+      kvLines.forEach((ln, i) => ctx.fillText(ln, boxX + 24, y + 58 + i * 44));
       ctx.fillStyle = '#5c5148';
       ctx.font = '26px ' + FONT;
       ctx.textAlign = 'right';
-      ctx.fillText('—— ' + commentary.keyVerse.ref, boxX + boxW - 24, y + boxH - 54);
+      ctx.fillText('—— ' + kvObj.ref, boxX + boxW - 24, y + boxH - 44);
       y += boxH + 28;
     }
 
