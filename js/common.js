@@ -44,16 +44,16 @@
   }
   function renderHeader(active) {
     const nav = [
-      ['index.html', '今日讀經', 'today'],
-      ['lesson.html', '每日一課', 'lesson'],
-      ['calendar.html', '讀經曆', 'calendar'],
-      ['worship.html', '線上崇拜', 'worship'],
-      ['about.html', '本書分析', 'about'],
+      ['index.html', '今日读经', 'today'],
+      ['lesson.html', '每日一课', 'lesson'],
+      ['calendar.html', '读经历', 'calendar'],
+      ['worship.html', '线上崇拜', 'worship'],
+      ['about.html', '本书分析', 'about'],
     ];
     const el = document.getElementById('site-header');
     if (!el) return;
     el.innerHTML =
-      '<a class="brand" href="index.html">每日讀經<small>2025–2026 · 香港聖公會讀經表</small></a>' +
+      '<a class="brand" href="index.html">每日读经<small>2025–2026 · 香港圣公会读经表</small></a>' +
       '<nav>' + nav.map(([href, label, key]) =>
         `<a href="${href}" class="${key === active ? 'active' : ''}">${label}</a>`).join('') + '</nav>';
   }
@@ -61,7 +61,7 @@
     return `<div class="nav-date">
       <button class="btn small" data-prev>‹ 前一日</button>
       <strong>${formatCN(dateStr)} · ${weekdayCN(dateStr)}</strong>
-      <button class="btn small" data-next>後一日 ›</button>
+      <button class="btn small" data-next>后一日 ›</button>
       <button class="btn small" data-today>今天</button>
     </div>`;
   }

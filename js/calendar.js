@@ -5,8 +5,8 @@
   cur.setHours(0, 0, 0, 0);
 
   const LEGEND = [
-    ['紫', '將臨期／大齋期'], ['紅', '殉道／聖靈降臨'], ['白', '節期／聖日'],
-    ['綠', '聖靈降臨期平日'], ['金/白', '主要慶節'], ['黑', '受難日'],
+    ['紫', '将临期／大斋期'], ['红', '殉道／圣灵降临'], ['白', '节期／圣日'],
+    ['绿', '圣灵降临期平日'], ['金/白', '主要庆节'], ['黑', '受难日'],
   ];
 
   function init() {
@@ -46,7 +46,7 @@
       el.onclick = () => location.href = 'lesson.html?date=' + el.dataset.date;
     });
     document.getElementById('legend').innerHTML = LEGEND.map(([c, n]) =>
-      `<span><i style="background:${c === '紫' ? '#5b3a8e' : c === '紅' ? '#b3413d' : c === '白' ? '#d8cfa0' : c === '綠' ? '#2e7d4f' : c === '金/白' ? '#d4af37' : '#333'}"></i>${n}</span>`).join('');
+      `<span><i style="background:${c === '紫' ? '#5b3a8e' : c === '红' ? '#b3413d' : c === '白' ? '#d8cfa0' : c === '绿' ? '#2e7d4f' : c === '金/白' ? '#d4af37' : '#333'}"></i>${n}</span>`).join('');
   }
 
   init();

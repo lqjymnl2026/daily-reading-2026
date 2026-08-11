@@ -23,9 +23,9 @@
     const feast = day.feast || (day.weekday === '主日' ? '主日' : '平日');
     document.getElementById('banner').innerHTML = `
       <div class="banner ${C.seasonClass(day.season)}">
-        <div class="season">線上崇拜 · ${C.esc(day.season)}</div>
+        <div class="season">线上崇拜 · ${C.esc(day.season)}</div>
         <h1>${C.esc(C.formatCN(day.date))} · ${C.esc(feast)}</h1>
-        <div class="meta"><span class="chip ${C.colorClass(day.color)}">禮儀顏色：${C.esc(day.color || '—')}</span></div>
+        <div class="meta"><span class="chip ${C.colorClass(day.color)}">礼仪颜色：${C.esc(day.color || '—')}</span></div>
       </div>`;
   }
 
@@ -77,11 +77,11 @@
               <div data-ref="${C.esc(r)}"></div></div>`;
           }
         } else {
-          html += `<div class="rubric">（本日此類經課未有指定）</div>`;
+          html += `<div class="rubric">（本日此类经课未有指定）</div>`;
         }
       } else if (step.steps) {
         for (const s of step.steps) {
-          html += `<div class="text ${s.rubric ? 'rubric' : ''}"><span class="${s.who === '會眾' ? 'resp' : 'leader'}">${C.esc(s.who)}：</span>${C.esc(s.text)}</div>`;
+          html += `<div class="text ${s.rubric ? 'rubric' : ''}"><span class="${s.who === '会众' ? 'resp' : 'leader'}">${C.esc(s.who)}：</span>${C.esc(s.text)}</div>`;
         }
       }
       html += `</div>`;

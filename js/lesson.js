@@ -1,4 +1,4 @@
-/* lesson.js — 每日一課 */
+/* lesson.js — 每日一课 */
 (function () {
   'use strict';
   const C = window.Common;
@@ -6,7 +6,7 @@
   let day = null;
   let dateStr = null;
 
-  const READING_LABEL = { ot: '舊約經課', psalm: '詩篇', epistle: '書信經課', gospel: '福音經課' };
+  const READING_LABEL = { ot: '旧约经课', psalm: '诗篇', epistle: '书信经课', gospel: '福音经课' };
   const READING_ORDER = ['ot', 'psalm', 'epistle', 'gospel'];
 
   function init() {
@@ -14,7 +14,7 @@
     dateStr = new URLSearchParams(location.search).get('date') || C.todayStr();
     C.loadData().then(() => {
       day = C.getDay(dateStr) || C.getDay(C.todayStr());
-      if (!day) { document.getElementById('app').innerHTML = '<p>資料載入失敗</p>'; return; }
+      if (!day) { document.getElementById('app').innerHTML = '<p>资料载入失败</p>'; return; }
       render();
     });
   }
@@ -28,9 +28,9 @@
   function renderBanner() {
     const colors = day.colors_extra && day.colors_extra.length ? [...day.colors_extra, day.color] : [day.color];
     const chips = [
-      `禮儀顏色：${day.color || '—'}`,
-      day.lunar ? `農曆 ${day.lunar}` : '',
-      day.solar_term ? `節氣：${day.solar_term}` : '',
+      `礼仪颜色：${day.color || '—'}`,
+      day.lunar ? `农历 ${day.lunar}` : '',
+      day.solar_term ? `节气：${day.solar_term}` : '',
       day.weekday === '主日' ? '主日' : '',
     ].filter(Boolean).map(s => `<span class="chip ${C.colorClass(day.color)}">${C.esc(s)}</span>`).join('');
     const feast = day.feast || (day.weekday === '主日' ? '主日' : '平日');
@@ -55,45 +55,45 @@
 
   async function renderSteps() {
     const app = document.getElementById('steps');
-    app.innerHTML = '<p style="text-align:center;color:#999">載入中…</p>';
+    app.innerHTML = '<p style="text-align:center;color:#999">载入中…</p>';
     const commentary = await window.Commentary.generate(day);
     const reflectionKey = 'reflection-' + day.date;
     const saved = localStorage.getItem(reflectionKey) || '';
 
     const steps = [
       {
-        n: 1, title: '文本閱讀', id: 'reading',
+        n: 1, title: '文本阅读', id: 'reading',
         body: renderReading(),
       },
       {
-        n: 2, title: '語音朗讀', id: 'audio',
+        n: 2, title: '语音朗读', id: 'audio',
         body: renderAudio(commentary),
       },
       {
-        n: 3, title: '今日釋經與屬靈教訓', id: 'study',
+        n: 3, title: '今日释经与属灵教训', id: 'study',
         body: renderStudy(commentary),
       },
       {
-        n: 4, title: '默想與感受回應', id: 'reflect',
-        body: `<p>安靜片刻，用以下問題幫助自己默想今天的經文：</p>
+        n: 4, title: '默想与感受回应', id: 'reflect',
+        body: `<p>安静片刻，用以下问题帮助自己默想今天的经文：</p>
           <ol>${commentary.questions.map(q => `<li>${C.esc(q)}</li>`).join('')}</ol>
-          <p>也可以在這裡寫下你的讀經感受（自動儲存在本機瀏覽器）：</p>
-          <textarea class="reflect" id="reflect-box" placeholder="寫下你今天讀經的感受、亮光或回應……">${C.esc(saved)}</textarea>`,
+          <p>也可以在这里写下你的读经感受（自动储存在本机浏览器）：</p>
+          <textarea class="reflect" id="reflect-box" placeholder="写下你今天读经的感受、亮光或回应……">${C.esc(saved)}</textarea>`,
       },
       {
-        n: 5, title: '回應禱文', id: 'prayer',
+        n: 5, title: '回应祷文', id: 'prayer',
         body: `<div class="prayer">${C.esc(commentary.prayer)}</div>
-          <p class="note">你也可以加上自己的祈禱，把今天的領受帶到上主面前。</p>`,
+          <p class="note">你也可以加上自己的祈祷，把今天的领受带到上主面前。</p>`,
       },
       {
-        n: 6, title: '線上崇拜', id: 'worship',
-        body: `<p>按今天的主題與經課，進入聖公會式的線上崇拜：</p>
+        n: 6, title: '线上崇拜', id: 'worship',
+        body: `<p>按今天的主题与经课，进入圣公会式的线上崇拜：</p>
           <div class="btnrow">
-            <a class="btn primary" href="worship.html?date=${day.date}&mode=morning">早禱崇拜</a>
-            <a class="btn" href="worship.html?date=${day.date}&mode=eucharist">聖餐崇拜</a>
-            <a class="btn" href="worship.html?date=${day.date}&mode=evening">晚禱崇拜</a>
+            <a class="btn primary" href="worship.html?date=${day.date}&mode=morning">早祷崇拜</a>
+            <a class="btn" href="worship.html?date=${day.date}&mode=eucharist">圣餐崇拜</a>
+            <a class="btn" href="worship.html?date=${day.date}&mode=evening">晚祷崇拜</a>
           </div>
-          <p class="note">崇拜流程參考香港聖公會《公禱書》結構，祝文為改寫版本。</p>`,
+          <p class="note">崇拜流程参考香港圣公会《公祷书》结构，祝文为改写版本。</p>`,
       },
     ];
 
@@ -115,12 +115,12 @@
     document.querySelectorAll('[data-speak-token]').forEach(b => {
       b.addEventListener('click', async () => {
         const token = b.getAttribute('data-speak-token');
-        if (window.TTS.isSpeaking()) { window.TTS.stop(); b.textContent = b.getAttribute('data-label') || '🔊 朗讀'; return; }
+        if (window.TTS.isSpeaking()) { window.TTS.stop(); b.textContent = b.getAttribute('data-label') || '🔊 朗读'; return; }
         b.textContent = '⏹ 停止';
         const res = await window.Bible.resolveRefString(token);
         const text = res.verses.map(v => v.text).join('。');
-        if (text) window.TTS.speak(text, { onEnd: () => { b.textContent = b.getAttribute('data-label') || '🔊 朗讀'; } });
-        else { b.textContent = b.getAttribute('data-label') || '🔊 朗讀'; }
+        if (text) window.TTS.speak(text, { onEnd: () => { b.textContent = b.getAttribute('data-label') || '🔊 朗读'; } });
+        else { b.textContent = b.getAttribute('data-label') || '🔊 朗读'; }
       });
     });
 
@@ -145,7 +145,7 @@
         card.innerHTML = res.verses.map(v =>
           `<p class="verse ${v.optional ? 'optional' : ''}"><sup>${C.esc(v.num)}</sup>${C.esc(v.text)}</p>`).join('');
       } else {
-        card.innerHTML = `<p class="rnote">${C.esc(res.note || '暫未收錄經文。')}</p>`;
+        card.innerHTML = `<p class="rnote">${C.esc(res.note || '暂未收录经文。')}</p>`;
       }
     }
   }
@@ -157,7 +157,7 @@
       const refsHtml = refs.map(r => `
         <div class="reading rt-${k}">
           <span class="rtag">${READING_LABEL[k]}</span><span class="rref">${C.esc(r)}</span>
-          <button class="btn small speak-btn" data-label="🔊 朗讀" data-speak-token="${C.esc(r)}">🔊 朗讀</button>
+          <button class="btn small speak-btn" data-label="🔊 朗读" data-speak-token="${C.esc(r)}">🔊 朗读</button>
           <div class="rtext" data-ref="${C.esc(r)}"></div>
         </div>`).join('');
       return refsHtml;
@@ -175,7 +175,7 @@
       return tabs + panels;
     }
     const sections = day.communion.sections && day.communion.sections.length
-      ? `<div class="note">本日有多場崇拜經課：${day.communion.sections.map(C.esc).join('、')}</div>` : '';
+      ? `<div class="note">本日有多场崇拜经课：${day.communion.sections.map(C.esc).join('、')}</div>` : '';
     const extra = renderDailyOffice();
     return sections + readingCard(options[0]) + extra;
   }
@@ -183,18 +183,18 @@
   function renderDailyOffice() {
     const sections = [];
     if (day.morning && day.morning.length) {
-      sections.push(`<h3 style="margin-top:1.4rem">早禱經課（補充）</h3>
+      sections.push(`<h3 style="margin-top:1.4rem">早祷经课（补充）</h3>
         ${day.morning.map(r => `<div class="reading rt-morning">
           <span class="rref">${C.esc(r)}</span>
-          <button class="btn small" data-speak-token="${C.esc(r)}" data-label="🔊 朗讀">🔊 朗讀</button>
+          <button class="btn small" data-speak-token="${C.esc(r)}" data-label="🔊 朗读">🔊 朗读</button>
           <div class="rtext" data-ref="${C.esc(r)}"></div>
         </div>`).join('')}`);
     }
     if (day.evening && day.evening.length) {
-      sections.push(`<h3 style="margin-top:1.4rem">晚禱經課（補充）</h3>
+      sections.push(`<h3 style="margin-top:1.4rem">晚祷经课（补充）</h3>
         ${day.evening.map(r => `<div class="reading rt-evening">
           <span class="rref">${C.esc(r)}</span>
-          <button class="btn small" data-speak-token="${C.esc(r)}" data-label="🔊 朗讀">🔊 朗讀</button>
+          <button class="btn small" data-speak-token="${C.esc(r)}" data-label="🔊 朗读">🔊 朗读</button>
           <div class="rtext" data-ref="${C.esc(r)}"></div>
         </div>`).join('')}`);
     }
@@ -215,20 +215,20 @@
       ${items.map((it, i) =>
         `<button class="btn small" data-speak-token="${C.esc(it.ref)}" data-label="🔊 ${C.esc(it.label)}">🔊 ${C.esc(it.label)}</button>`).join('')}
       </div>
-      <p class="note">使用中文語音朗讀：桌面／iOS 用瀏覽器內置語音；<b>Android 自動改用「在線語音」</b>（需網絡）。若仍無聲，請確認裝置已安裝 Google 文字轉語音並下載中文語音。</p>`;
+      <p class="note">使用中文语音朗读：桌面／iOS 用浏览器内置语音；<b>Android 自动改用「在线语音」</b>（需网络）。若仍无声，请确认装置已安装 Google 文字转语音并下载中文语音。</p>`;
   }
 
   function renderStudy(commentary) {
     const ov = commentary.overview;
     return `
-      <h3>今日主題</h3>
+      <h3>今日主题</h3>
       <div class="keyverse">${C.esc(commentary.theme)}</div>
       ${commentary.keyVerse ? `<h3>今日金句</h3>
         <div class="keyverse">「${C.esc(commentary.keyVerse.text)}」<div style="text-align:right;font-style:normal">—— ${C.esc(commentary.keyVerse.ref)}</div></div>` : ''}
-      <h3>經課概覽</h3>
+      <h3>经课概览</h3>
       ${Object.keys(ov).filter(k => ov[k]).map(k =>
         `<div class="reading rt-${k}"><span class="rtag">${READING_LABEL[k]}</span><span class="rtext">${C.esc(ov[k])}</span></div>`).join('')}
-      <h3>屬靈教訓</h3>
+      <h3>属灵教训</h3>
       <div class="commentary">
         ${commentary.lessons.map(l => `<div class="point"><b>${C.esc(l.title)}</b><br>${C.esc(l.body)}</div>`).join('')}
       </div>`;

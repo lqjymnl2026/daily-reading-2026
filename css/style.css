@@ -1,4 +1,4 @@
-/* 每日讀經 — liturgical devotional design */
+/* 每日读经 — liturgical devotional design */
 :root {
   --ink: #2c2420;
   --ink-soft: #5c5148;
@@ -9,12 +9,12 @@
   --gold-soft: #d9c794;
   --card: #fffdf8;
   /* season accents */
-  --adv: #5b3a8e;    /* 將臨期 紫 */
-  --xmas: #b8860b;   /* 聖誕 金 */
-  --epiph: #c9a227;  /* 顯現 金/白 */
-  --lent: #6d4a3a;   /* 大齋 棕紫 */
-  --easter: #d4af37; /* 復活 金 */
-  --pent: #2e7d4f;   /* 聖靈降臨 綠 */
+  --adv: #5b3a8e;    /* 将临期 紫 */
+  --xmas: #b8860b;   /* 圣诞 金 */
+  --epiph: #c9a227;  /* 显现 金/白 */
+  --lent: #6d4a3a;   /* 大斋 棕紫 */
+  --easter: #d4af37; /* 复活 金 */
+  --pent: #2e7d4f;   /* 圣灵降临 绿 */
   --ord: #4a7a8c;    /* 常年期 */
   --red: #b3413d;
   --white: #f5f1e6;
@@ -23,7 +23,7 @@
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  font-family: "Noto Serif TC", "Songti TC", "PMingLiU", "Times New Roman", serif;
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "Microsoft YaHei", "SimSun", serif;
   color: var(--ink);
   background: var(--paper);
   line-height: 1.85;
@@ -63,11 +63,11 @@ main { max-width: 900px; margin: 0 auto; padding: 1.6rem 1.1rem 4rem; }
   content: ""; position: absolute; right: -40px; top: -60px; width: 220px; height: 220px;
   border-radius: 50%; background: rgba(255,255,255,.08);
 }
-.banner.season-將臨期 { background: linear-gradient(135deg, #4a2f77, #6b4ea0); }
-.banner.season-聖誕期, .banner.season-顯現期 { background: linear-gradient(135deg, #8a6a14, #c9a227); }
-.banner.season-大齋期 { background: linear-gradient(135deg, #54392e, #7a5a48); }
-.banner.season-復活期 { background: linear-gradient(135deg, #9a7a12, #d9bc44); }
-.banner.season-聖靈降臨期 { background: linear-gradient(135deg, #1f6b40, #3f9c67); }
+.banner.season-将临期 { background: linear-gradient(135deg, #4a2f77, #6b4ea0); }
+.banner.season-圣诞期, .banner.season-显现期 { background: linear-gradient(135deg, #8a6a14, #c9a227); }
+.banner.season-大斋期 { background: linear-gradient(135deg, #54392e, #7a5a48); }
+.banner.season-复活期 { background: linear-gradient(135deg, #9a7a12, #d9bc44); }
+.banner.season-圣灵降临期 { background: linear-gradient(135deg, #1f6b40, #3f9c67); }
 .banner.season-常年期 { background: linear-gradient(135deg, #35606f, #5b91a3); }
 .banner .season { font-size: .78rem; letter-spacing: .35em; opacity: .9; }
 .banner h1 { margin: .2rem 0 .2rem; font-size: 1.6rem; }
@@ -80,9 +80,9 @@ main { max-width: 900px; margin: 0 auto; padding: 1.6rem 1.1rem 4rem; }
   background: var(--paper-2); border: 1px solid var(--line); font-size: .82rem; color: var(--ink-soft);
 }
 .chip.color-紫 { background: #efe7f7; border-color: #cfbde6; color: #5b3a8e; }
-.chip.color-紅 { background: #f8e4e2; border-color: #e8b9b5; color: #b3413d; }
+.chip.color-红 { background: #f8e4e2; border-color: #e8b9b5; color: #b3413d; }
 .chip.color-白, .chip.color-金\/白 { background: #f6f2e6; border-color: #dccf9f; color: #8a6a14; }
-.chip.color-綠 { background: #e5f2e9; border-color: #bcdcc7; color: #2e7d4f; }
+.chip.color-绿 { background: #e5f2e9; border-color: #bcdcc7; color: #2e7d4f; }
 .chip.color-黑, .chip.color-灰 { background: #ece9e4; border-color: #c9c3b9; color: #555; }
 
 /* cards */
@@ -171,8 +171,8 @@ textarea.reflect {
 .cal-cell.empty { background: transparent; border-color: transparent; cursor: default; }
 .cal-cell.today { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-soft); }
 .cal-cell .color-dot { width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 5px; right: 5px; }
-.dot-紫 { background: #5b3a8e; } .dot-紅 { background: #b3413d; } .dot-白 { background: #d8cfa0; border:1px solid #b7a65f; }
-.dot-綠 { background: #2e7d4f; } .dot-金\/白 { background: #d4af37; } .dot-黑 { background: #333; } .dot-灰 { background: #999; }
+.dot-紫 { background: #5b3a8e; } .dot-红 { background: #b3413d; } .dot-白 { background: #d8cfa0; border:1px solid #b7a65f; }
+.dot-绿 { background: #2e7d4f; } .dot-金\/白 { background: #d4af37; } .dot-黑 { background: #333; } .dot-灰 { background: #999; }
 .cal-legend { display: flex; gap: .8rem; flex-wrap: wrap; font-size: .75rem; color: var(--ink-soft); margin-top: .5rem; }
 .cal-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: .25rem; }
 
