@@ -42,6 +42,24 @@
   function esc(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
+  const COLOR_HEX = {
+    '紫': '#5b3a8e', '红': '#b3413d', '白': '#b9a86f', '绿': '#2e7d4f',
+    '金': '#b8860b', '金/白': '#c9a227', '黑': '#3a3a3a', '灰': '#888888',
+  };
+  const COLOR_HEX_SOFT = {
+    '紫': '#7a5db0', '红': '#c95a54', '白': '#d3c79b', '绿': '#3f9c67',
+    '金': '#c9a227', '金/白': '#d4b83a', '黑': '#555555', '灰': '#aaaaaa',
+  };
+  const COLOR_DESC = {
+    '紫': '将临期、大斋期', '红': '殉道者、圣灵降临日等', '白': '节期、圣日',
+    '绿': '圣灵降临期平日', '金': '主要庆节', '金/白': '救主圣诞、复活等大节',
+    '黑': '耶稣受难日', '灰': '平日',
+  };
+  function colorBase(color) { return color ? String(color).split('（')[0].split('(')[0].trim() : null; }
+  function colorHex(color) { const b = colorBase(color); return (b && COLOR_HEX[b]) || '#2c2420'; }
+  function colorHexSoft(color) { const b = colorBase(color); return (b && COLOR_HEX_SOFT[b]) || '#3d322a'; }
+  function colorDesc(color) { const b = colorBase(color); return (b && COLOR_DESC[b]) || ''; }
+
   function renderHeader(active) {
     const nav = [
       ['index.html', '今日读经', 'today'],
@@ -53,9 +71,18 @@
     const el = document.getElementById('site-header');
     if (!el) return;
     el.innerHTML =
-      '<a class="brand" href="index.html">每日读经<small>2025–2026 · 香港圣公会读经表</small></a>' +
+      '<a class="brand" href="index.html">每日读经<small>2025–2026 · 香港圣公会读经表</small><span class="theme-dot" id="theme-dot" title="今日礼仪颜色"></span></a>' +
       '<nav>' + nav.map(([href, label, key]) =>
         `<a href="${href}" class="${key === active ? 'active' : ''}">${label}</a>`).join('') + '</nav>';
+    // 全站导航主题色 = 今日礼仪颜色
+    loadData().then(() => {
+      const day = byDate[todayStr()];
+      const color = (day && day.color) || null;
+      el.style.setProperty('--theme-main', colorHex(color));
+      el.style.setProperty('--theme-soft', colorHexSoft(color));
+      const dot = document.getElementById('theme-dot');
+      if (dot) { dot.style.background = colorHex(color); dot.title = (day ? (day.color || '') + ' · 今日礼仪颜色' : '今日礼仪颜色'); }
+    });
   }
   function navDate(dateStr) {
     return `<div class="nav-date">
@@ -66,5 +93,5 @@
     </div>`;
   }
 
-  global.Common = { loadData, getDay, todayStr, parseDate, formatCN, weekdayCN, addDays, seasonClass, colorClass, esc, renderHeader, navDate };
+  global.Common = { loadData, getDay, todayStr, parseDate, formatCN, weekdayCN, addDays, seasonClass, colorClass, esc, renderHeader, navDate, colorBase, colorHex, colorHexSoft, colorDesc, COLOR_HEX, COLOR_DESC };
 })(window);

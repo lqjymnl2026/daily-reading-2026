@@ -37,9 +37,22 @@
       return `<div class="reading rt-${k}"><span class="rtag">${label[k]}</span><span class="rref">${C.esc(r)}</span></div>`;
     }).join('');
     const el = document.getElementById('today');
+    const color = day.color || null;
+    const colorShow = color ? `
+      <div class="color-show">
+        <span class="swatch" style="background:${C.colorHex(color)}"></span>
+        <div>
+          <div class="cname">礼仪颜色：${C.esc(color)}</div>
+          <div class="cdesc">${C.esc(C.colorDesc(color) || '当日崇拜主题所用礼仪颜色')}${C.esc(day.season ? ' · ' + day.season : '')}</div>
+        </div>
+      </div>
+      <div class="color-legend">
+        ${Object.entries(C.COLOR_HEX).map(([k, h]) => `<span class="lg"><i style="background:${h}"></i>${C.esc(k)}${k === color ? '（今日）' : ''}</span>`).join('')}
+      </div>` : '';
     el.innerHTML = `
       <section class="card">
         <h2>今日经课</h2>
+        ${colorShow}
         ${refs}
         ${day.communion.options.length > 1 ? '<p class="note">本主日提供「互补式／半连读式」两套经课，可于每日一课页面查看。</p>' : ''}
         <div class="btnrow">
