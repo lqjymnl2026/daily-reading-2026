@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>Edge TTS Test</title></head>
+<body>
+<h3>Edge 神经语音（晓晓）连接测试</h3>
+<div id="log" style="white-space:pre-wrap;font-family:monospace"></div>
+<script>
+const logEl = document.getElementById('log');
+function log(s){ logEl.textContent += s + '\n'; console.log(s); }
+const TRUSTED = '6A5AA1D4EAFF4E9FB37E23D68491D6F4';
+async function secMsGec(){
+  const unixTicks = Math.floor(Date.now()/1000)*10000000 + 116444736000000000;
+  const data = new TextEncoder().encode(TRUSTED + unixTicks + 'X' + TRUSTED);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return btoa(String.fromCharCode(...new Uint8Array(hash)));
+}
+function msg(path, type, payload){
+  const h = 'X-Timestamp:' + new Date().toUTCString() + '\r\nContent-Type:' + type + '\r\nPath:' + path + '\r\n\r\n';
+  return h + payload;
+}
+(async () => {
+  try {
+    const sec = await secMsGec();
+    const url = 'wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=' + TRUSTED + '&ConnectionId=' + crypto.randomUUID() + '&Sec-MS-GEC=' + encodeURIComponent(sec) + '&Sec-MS-GEC-Version=1-130.0.2849.68';
+    log('连接中...'); fetch('/edge_result?status=start');
+    const ws = new WebSocket(url);
+    let audioChunks = [];
+    const to = setTimeout(()=>{ log('超时，收到字节: ' + totalBytes()); fetch('/edge_result?status=timeout&bytes=' + totalBytes()); ws.close(); }, 12000);
+    function totalBytes(){ return audioChunks.reduce((a,c)=>a+c.byteLength,0); }
+    ws.onopen = () => {
+      log('已连接 ✓');
+      ws.send(msg('speech.config','application/json; charset=utf-8', JSON.stringify({context:{synthesis:{audio:{metadataoptions:{wordBoundaryEnabled:'true'},outputFormat:'audio-24khz-48kbitrate-mono-mp3'}}}})));
+      setTimeout(()=>{
+        const ssml = "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='zh-CN'><voice name='zh-CN-XiaoxiaoNeural'><prosody pitch='+0Hz' rate='+0%' volume='+0%'>愿你平安喜乐，这是每日读经的语音测试。</prosody></voice></speak>";
+        ws.send(msg('ssml','application/ssml+xml', ssml));
+      }, 400);
+    };
+    ws.onmessage = (ev) => {
+      if (typeof ev.data === 'string') { return; }
+      const buf = ev.data;
+      const head = new TextDecoder().decode(buf.slice(0, 60));
+      if (head.startsWith('Path:audio')) {
+        const idx = buf.indexOf(new TextEncoder().encode('\r\n\r\n'));
+        audioChunks.push(buf.slice(idx+4));
+      } else if (head.includes('turn.end')) {
+        clearTimeout(to);
+        const blob = new Blob(audioChunks, {type:'audio/mpeg'});
+        log('成功！收到音频: ' + totalBytes() + ' 字节'); fetch('/edge_result?status=ok&bytes=' + totalBytes());
+        const u = URL.createObjectURL(blob);
+        const a = new Audio(u);
+        a.play().then(()=>log('正在播放 ✓ (晓晓)')).catch(e=>log('播放失败:'+e.message));
+        ws.close();
+      }
+    };
+    ws.onerror = (e) => { log('连接错误: ' + (e.message || 'unknown')); fetch('/edge_result?status=err'); };
+    ws.onclose = (e) => { if (e.code !== 1000) log('连接关闭 code=' + e.code); };
+  } catch(e){ log('异常: ' + e.message); }
+})();
+</script></body></html>

@@ -123,6 +123,10 @@
     const box = document.getElementById('reflect-box');
     if (box) box.addEventListener('input', () => localStorage.setItem(reflectionKey, box.value));
 
+    // voice selector persistence
+    const vs = document.getElementById('tts-voice-select');
+    if (vs) vs.addEventListener('change', () => { try { localStorage.setItem('tts-voice', vs.value); } catch (e) {} });
+
     // audio bindings
     document.querySelectorAll('[data-speak-token]').forEach(b => {
       b.addEventListener('click', async () => {
@@ -131,7 +135,9 @@
         b.textContent = '⏹ 停止';
         const res = await window.Bible.resolveRefString(token);
         const text = res.verses.map(v => v.text).join('。');
-        if (text) window.TTS.speak(text, { onEnd: () => { b.textContent = b.getAttribute('data-label') || '🔊 朗读'; } });
+        const sel = document.getElementById('tts-voice-select');
+        const voice = sel ? sel.value : 'auto';
+        if (text) window.TTS.speak(text, { voice: voice, onEnd: () => { b.textContent = b.getAttribute('data-label') || '🔊 朗读'; } });
         else { b.textContent = b.getAttribute('data-label') || '🔊 朗读'; }
       });
     });
@@ -223,7 +229,16 @@
       const refs = Array.isArray(v) ? v : [v];
       refs.forEach(r => items.push({ label: READING_LABEL[k] + ' ' + I18N.tData(r), ref: r }));
     }
-    return `<div class="btnrow">
+    const curVoice = (() => { try { return localStorage.getItem('tts-voice') || 'auto'; } catch (e) { return 'auto'; } })();
+    return `<div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin:.4rem 0">
+        <label style="font-size:.85rem;color:var(--ink-soft)">${C.esc(I18N.t('voiceLabel'))}</label>
+        <select class="lang-select" id="tts-voice-select" style="color:#2c2420;border-color:#c9b98a">
+          <option value="auto" ${curVoice === 'auto' ? 'selected' : ''}>${C.esc(I18N.t('voiceAuto'))}</option>
+          <option value="xiaoxiao" ${curVoice === 'xiaoxiao' ? 'selected' : ''}>${C.esc(I18N.t('voiceXiaoxiao'))}</option>
+          <option value="yunxi" ${curVoice === 'yunxi' ? 'selected' : ''}>${C.esc(I18N.t('voiceYunxi'))}</option>
+        </select>
+      </div>
+      <div class="btnrow">
       ${items.map((it, i) =>
         `<button class="btn small" data-speak-token="${C.esc(it.ref)}" data-label="🔊 ${C.esc(it.label)}">🔊 ${C.esc(it.label)}</button>`).join('')}
       </div>

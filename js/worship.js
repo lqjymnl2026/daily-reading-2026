@@ -112,7 +112,8 @@
         const text = res.verses.map(v => v.text).join('');
         if (window.TTS.isSpeaking()) { window.TTS.stop(); b.textContent = '🔊'; return; }
         b.textContent = '⏹';
-        window.TTS.speak(text, { onEnd: () => { b.textContent = '🔊'; } });
+        const voice = (() => { try { return localStorage.getItem('tts-voice') || 'auto'; } catch (e) { return 'auto'; } })();
+        window.TTS.speak(text, { voice: voice, onEnd: () => { b.textContent = '🔊'; } });
       });
     });
   }

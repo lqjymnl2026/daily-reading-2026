@@ -17,6 +17,10 @@
     navWorship:      { zhCN: '线上崇拜', en: 'Online Worship', ja: 'オンライン礼拝' },
     navAbout:        { zhCN: '本书分析', en: 'About the Book', ja: '本書の解説' },
     viewToggleTitle: { zhCN: '点击切换：自动 / 手机版 / 电脑版', en: 'Click to switch: Auto / Mobile / Desktop', ja: 'クリックで切替：自動 / モバイル / デスクトップ' },
+    voiceTitle:    { zhCN: '朗读语音', en: 'Reading Voice', ja: '読み上げ音声' },
+    voiceXiaoxiao: { zhCN: '晓晓（神经女声）', en: 'Xiaoxiao (Neural)', ja: 'シャオシャオ（女声）' },
+    voiceYunxi:    { zhCN: '云希（神经男声）', en: 'Yunxi (Neural)', ja: 'ユンシー（男声）' },
+    voiceAuto:     { zhCN: '系统语音', en: 'System Voice', ja: 'システム音声' },
     viewAuto:        { zhCN: '🔄 自动', en: '🔄 Auto', ja: '🔄 自動' },
     viewMobile:      { zhCN: '📱 手机版', en: '📱 Mobile', ja: '📱 モバイル' },
     viewDesktop:     { zhCN: '🖥 电脑版', en: '🖥 Desktop', ja: '🖥 デスクトップ' },
@@ -82,7 +86,7 @@
     worshipEvening:{ zhCN: '晚祷崇拜', en: 'Evening Prayer', ja: '夕の祈禱（礼拝）' },
     worshipNote: { zhCN: '崇拜流程参考香港圣公会《公祷书》结构，祝文为改写版本。', en: 'The worship order follows the HKSKH Book of Common Prayer; collects are adapted.', ja: '礼拝の順序は香港聖公会『祈祷書』に基づく改作版です。' },
     multimass: { zhCN: '本日有多场崇拜经课：', en: 'Today has several sets of lessons:', ja: '本日は複数の礼拝経課があります：' },
-    audioNote: { zhCN: '使用中文语音朗读：桌面／iOS 用浏览器内置语音；Android 自动改用「在线语音」（需网络）。若仍无声，请确认装置已安装 Google 文字转语音并下载中文语音。', en: 'Chinese audio reading: desktop/iOS use the built-in voice; Android uses online voice automatically (needs network). If still silent, install Google TTS with Chinese voice.', ja: '中国語の音声読み上げ：デスクトップ/iOS は内蔵音声、Android は自動でオンライン音声（要ネット接続）。無音の場合は Google TTS と中国語音声の導入を確認してください。' },
+    audioNote: { zhCN: '可选用微软 Edge 神经语音「晓晓 / 云希」：用 Edge 浏览器打开即可直接使用；其他浏览器会自动尝试在线神经语音（需网络），失败则用内置中文语音。', en: 'Use Microsoft Edge neural voices Xiaoxiao / Yunxi: open in Edge for best results; other browsers try online neural voice (needs network) with fallback.', ja: 'Microsoft Edge のニューラル音声（シャオシャオ／ユンシー）を選択可能。Edge 推奨、他ブラウザはオンライン音声を試し失敗時は内蔵音声へ。' },
     altNote: { zhCN: '可选经文（或）', en: 'Alternative reading (or)', ja: '選択可能な聖句（または）' },
     // 崇拜结构
     w_宣召: { zhCN: '宣召', en: 'Opening Sentence', ja: '招詞' },
@@ -151,6 +155,11 @@
     'w_以色列颂（撒迦利亚颂）': { zhCN: '以色列颂（撒迦利亚颂）', en: 'Canticle: Benedictus', ja: 'ベネディクトゥス' },
     'w_尊主颂（马利亚颂）': { zhCN: '尊主颂（马利亚颂）', en: 'Canticle: Magnificat', ja: 'マニフィカト' },
     w_西面颂: { zhCN: '西面颂', en: 'Canticle: Nunc Dimittis', ja: 'ヌンク・ディミティス' },
+    // 语音
+    voiceLabel: { zhCN: '朗读语音', en: 'Voice', ja: '音声' },
+    voiceAuto: { zhCN: '自动', en: 'Auto', ja: '自動' },
+    voiceXiaoxiao: { zhCN: '晓晓（Edge神经语音）', en: 'Xiaoxiao (Edge neural)', ja: 'シャオシャオ' },
+    voiceYunxi: { zhCN: '云希（Edge神经语音）', en: 'Yunxi (Edge neural)', ja: 'ユンシー' },
   };
 
   let lang = 'zhCN';
