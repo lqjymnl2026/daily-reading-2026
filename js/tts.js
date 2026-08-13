@@ -1,8 +1,8 @@
 /* tts.js — 语音朗读引擎
  * 1) 本地通道：Web Speech API（Microsoft Edge 内置晓晓/云希神经语音优先；其他浏览器用内置中文语音）
- * 2) 安卓 / 回退：在线语音（Google TTS mp3）
- * 3) 可选「晓晓 / 云希」：优先本地 Edge 神经语音，否则尝试 Edge 在线神经语音（edgetts.js），
- *    再失败则回退默认中文语音。
+ * 2) 可选「晓晓 / 云希」：优先本地 Edge 神经语音；否则尝试 Edge 在线神经语音（edge-tts.js，
+ *    仅 Edge 浏览器可直连；配置代理后所有浏览器可用），再失败则回退默认中文语音。
+ * 3) 安卓 / 回退：在线语音（Google TTS mp3）
  */
 (function (global) {
   'use strict';
@@ -14,12 +14,13 @@
 
   let speakingFlag = false;
   let webUtterance = null;
-  let remoteAudio = null;      // 单 Audio 元素（复用，避免自动播放限制）
+  let remoteAudio = null;      // Google TTS 用的 Audio 元素
+  let edgeAudio = null;        // Edge 在线神经语音用的 Audio 元素
   let remoteQueue = [];
   let remoteIndex = 0;
   let onEndCb = null;
   let webFallbackTimer = null;
-  let edgeWs = null;
+  let edgeToken = 0;           // 防止停止后迟到的在线合成结果继续播放
 
   function supportsWeb() { return 'speechSynthesis' in window; }
   function isAndroid() { return /Android/i.test(navigator.userAgent); }
@@ -60,13 +61,21 @@
     return zhtw || vs[0];
   }
 
+  function endSpeaking() {
+    speakingFlag = false;
+    if (onEndCb) { const cb = onEndCb; onEndCb = null; cb(); }
+  }
+
   function stopInternal() {
+    edgeToken++; // 使进行中的 Edge 在线合成结果失效
     if (webFallbackTimer) { clearTimeout(webFallbackTimer); webFallbackTimer = null; }
     if (supportsWeb()) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+    if (global.EdgeTTS && global.EdgeTTS.cancel) { try { global.EdgeTTS.cancel(); } catch (e) {} }
     if (remoteAudio) { try { remoteAudio.pause(); remoteAudio.onended = null; remoteAudio.onerror = null; } catch (e) {} remoteAudio = null; }
-    remoteQueue = []; remoteIndex = 0;
+    if (edgeAudio) { try { edgeAudio.pause(); edgeAudio.onended = null; edgeAudio.onerror = null; } catch (e) {} edgeAudio = null; }
+    remoteQueue = [];
+    remoteIndex = 0;
     webUtterance = null;
-    if (edgeWs) { try { edgeWs.close(); } catch (e) {} edgeWs = null; }
     speakingFlag = false;
   }
 
@@ -83,7 +92,7 @@
     speakingFlag = true;
     onEndCb = onEnd;
 
-    // 在线语音（安卓）或用户选了 Edge 在线神经语音
+    // 安卓 / 不支持 Web Speech → 在线
     const needOnline = !supportsWeb() || isAndroid();
 
     if (voice === 'xiaoxiao' || voice === 'yunxi') {
@@ -91,10 +100,9 @@
       if (local) { // Edge 内置神经语音（最佳，离线）
         if (tryWebSpeech(text, rate, local)) return;
       }
-      // 尝试 Edge 在线神经语音
+      // 在线 Edge 神经语音
       if (global.EdgeTTS && global.EdgeTTS.synthesize) {
-        const ok = tryEdgeOnline(voice, text, rate);
-        if (ok) return;
+        if (tryEdgeOnline(voice, text, rate, onEnd)) return;
       }
       // 回退：普通 Web Speech / 在线
       if (needOnline) { startRemote(text); return; }
@@ -126,14 +134,12 @@
       u.pitch = 1;
       u.onend = () => {
         if (webFallbackTimer) { clearTimeout(webFallbackTimer); webFallbackTimer = null; }
-        speakingFlag = false;
-        if (onEndCb) { const cb = onEndCb; onEndCb = null; cb(); }
+        endSpeaking();
       };
       u.onerror = (ev) => {
         if (ev && ev.error === 'interrupted') return;
         if (webFallbackTimer) { clearTimeout(webFallbackTimer); webFallbackTimer = null; }
-        speakingFlag = false;
-        if (onEndCb) { const cb = onEndCb; onEndCb = null; cb(); }
+        endSpeaking();
       };
       webUtterance = u;
       window.speechSynthesis.speak(u);
@@ -144,34 +150,36 @@
     }
   }
 
-  /* ---------- Edge 在线神经语音（edgetts.js） ---------- */
-  function tryEdgeOnline(voiceKey, text, rate) {
+  /* ---------- Edge 在线神经语音（edge-tts.js） ---------- */
+  function tryEdgeOnline(voiceKey, text, rate, onEnd) {
     const target = EDGE_NEURAL.find(e => e.key === voiceKey);
-    if (!target) return false;
-    let handled = false;
-    const finish = (ok) => {
-      if (handled) return; handled = true;
-      if (ok) { speakingFlag = false; if (onEndCb) { const cb = onEndCb; onEndCb = null; cb(); } }
-      else {
-        // 回退默认
-        stopInternal();
-        speakingFlag = true; onEndCb = onEndCb;
-        if (!supportsWeb() || isAndroid()) { startRemote(text); return; }
-        if (!tryWebSpeech(text, rate, pickVoice('auto'))) startRemote(text);
-      }
-    };
-    edgeWs = global.EdgeTTS.synthesize({
-      voice: target.voice,
-      text: text,
-      rate: rate,
-      onStart: () => {},
-      onEnd: () => finish(true),
-      onError: () => finish(false),
+    if (!target || !global.EdgeTTS || !global.EdgeTTS.synthesize) return false;
+    const token = ++edgeToken;
+    global.EdgeTTS.synthesize(text, target.voice, { rate: rate }).then(blob => {
+      if (token !== edgeToken) { if (edgeAudio) { try { edgeAudio.pause(); } catch (e) {} edgeAudio = null; } return; }
+      if (!blob || !blob.size) throw new Error('empty');
+      const url = URL.createObjectURL(blob);
+      if (!edgeAudio) edgeAudio = new Audio();
+      edgeAudio.src = url;
+      edgeAudio.onended = () => { URL.revokeObjectURL(url); edgeAudio = null; endSpeaking(); };
+      edgeAudio.onerror = () => { URL.revokeObjectURL(url); edgeAudio = null; edgeFallback(text, rate, onEnd); };
+      return edgeAudio.play().catch(() => { URL.revokeObjectURL(url); edgeAudio = null; throw new Error('autoplay'); });
+    }).catch(() => {
+      if (token !== edgeToken) return;
+      edgeFallback(text, rate, onEnd);
     });
-    return edgeWs !== null;
+    return true;
   }
 
-  /* ---------- 在线语音（Google TTS → mp3） ---------- */
+  /* Edge 在线失败 → 系统语音 → Google TTS */
+  function edgeFallback(text, rate, onEnd) {
+    if (edgeAudio) { try { edgeAudio.pause(); } catch (e) {} edgeAudio = null; }
+    if (!supportsWeb() || isAndroid()) { startRemote(text); return; }
+    if (tryWebSpeech(text, rate, pickVoice('auto'))) return;
+    startRemote(text);
+  }
+
+  /* ---------- 在线语音（Google TTS → mp3，兜底） ---------- */
   function remoteUrl(chunk) {
     return 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=' + encodeURIComponent(chunk);
   }
@@ -190,22 +198,17 @@
     playNextRemote();
   }
   function playNextRemote() {
-    if (remoteIndex >= remoteQueue.length) {
-      speakingFlag = false;
-      if (onEndCb) { const cb = onEndCb; onEndCb = null; cb(); }
-      return;
-    }
+    if (remoteIndex >= remoteQueue.length) { endSpeaking(); return; }
     const chunk = remoteQueue[remoteIndex++];
     if (!remoteAudio) remoteAudio = new Audio();
     remoteAudio.src = remoteUrl(chunk);
     remoteAudio.onended = () => { playNextRemote(); };
     remoteAudio.onerror = () => {
       if (remoteIndex < remoteQueue.length) playNextRemote();
-      else { speakingFlag = false; if (onEndCb) { const cb = onEndCb; onEndCb = null; cb(); } }
+      else endSpeaking();
     };
     remoteAudio.play().catch(() => {
-      remoteAudio = null; speakingFlag = false;
-      if (onEndCb) { const cb = onEndCb; onEndCb = null; cb(); }
+      remoteAudio = null; endSpeaking();
     });
   }
 
